@@ -46,15 +46,15 @@
 
 1. **Download** Moondream Station using this terminal command:
    ```
-   $ curl -fsSL https://depot.moondream.ai/station/install.sh | bash
+   $ curl https://depot.moondream.ai/station/install.sh | bash
    ```
 
-2. **Launch** by double-clicking the newly created "Moondream Station" app. If the app does not automatically appear in finder,
+2. **Launch** by double-clicking the newly created "Moondream Station" app. On Mac, if the app does not automatically appear in finder,
 look under `~/Applications ` or `~/Downloads`
 
 That's it! Moondream Station will automatically set itself up.
 
-> **Note**: Currently only supports **macOS 15+**. Linux and Windows support coming soon.
+> **Note**: Currently only supports **macOS 15+** and **Ubuntu 22+**. Windows support coming soon.
 
 ### Basic Usage
 
