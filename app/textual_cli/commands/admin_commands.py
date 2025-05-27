@@ -1,53 +1,18 @@
 import sys
 import time
 import requests
-import subprocess
-
 from typing import Dict, Any, Optional
 
 from moondream_cli.utils.helpers import create_spinner, run_spinner
 
 
-def check_platform() -> str:
-    """
-    Determine the platform (OS) the code is running on.
-
-    Returns:
-        str: 'macOS', 'ubuntu', or 'unsupported'
-    """
-    import platform
-
-    system = platform.system().lower()
-
-    if system == "darwin":
-        return "macOS"
-    elif system == "linux":
-        # Check if it's Ubuntu or a derivative
-        try:
-            import os
-
-            if os.path.exists("/etc/lsb-release"):
-                with open("/etc/lsb-release", "r") as f:
-                    if "ubuntu" in f.read().lower():
-                        return "ubuntu"
-            # Fallback for other detection methods
-            return "ubuntu"
-        except:
-            return "ubuntu"  # Assume Ubuntu for Linux
-    else:
-        return "unsupported"
-
-
 class AdminCommands:
     """Administrative commands for the Moondream CLI."""
 
-    def __init__(
-        self, server_url: str, headers: Dict[str, str], attached_station: bool = False
-    ):
+    def __init__(self, server_url: str, headers: Dict[str, str]):
         """Initialize with server URL and headers."""
         self.server_url = server_url
         self.headers = headers
-        self.attached_server = attached_station
 
     def _make_request(
         self,
@@ -214,16 +179,13 @@ class AdminCommands:
             return
 
         print("The server will restart during the update process.")
+        print(f"Waiting for the {component_type} to update and restart...")
 
         # Set up the spinner
-
-        if self.attached_server:
-            print(f"Waiting for {component_type} update...")
-        else:
-            spinner, stop_spinner, spin_function = create_spinner()
-            spinner_thread = run_spinner(
-                spin_function, f"Waiting for {component_type} update..."
-            )
+        spinner, stop_spinner, spin_function = create_spinner()
+        spinner_thread = run_spinner(
+            spin_function, f"Waiting for {component_type} update..."
+        )
 
         # Poll status until component is back online
         last_status = None
@@ -286,9 +248,8 @@ class AdminCommands:
                 )
         finally:
             # Stop and clean up spinner
-            if not self.attached_server:
-                stop_spinner["stop"] = True
-                spinner_thread.join()
+            stop_spinner["stop"] = True
+            spinner_thread.join()
             sys.stdout.write("\r")
             sys.stdout.flush()
 
@@ -387,18 +348,8 @@ class AdminCommands:
             else:
                 print("CLI update initiated successfully.")
 
-            # Exit after CLI update is complete on Ubuntu, as the CLI process needs to end
-            # so that the new CLI can be used on next invocation
-            if check_platform() == "ubuntu":
-                print(
-                    "⚠️ CLI update complete. Please restart the CLI to use the updated version."
-                )
-                sys.exit(0)
-
         except requests.exceptions.ConnectionError:
             print("Update initiated. CLI is updating...")
-            if check_platform() == "ubuntu":
-                sys.exit(0)
         except Exception as e:
             print(f"Error initiating CLI update: {e}")
 
@@ -437,15 +388,21 @@ class AdminCommands:
         else:
             print("Model is up to date")
 
+        # Update CLI if needed
+        cli_info = updates_result.get("cli", {})
+        if cli_info.get("ood", False):
+            any_ood = True
+            print("CLI update needed. Updating CLI...")
+            self.update_cli(True)
+        else:
+            print("CLI is up to date")
+
         # Update hypervisor if needed
         hypervisor_info = updates_result.get("hypervisor", {})
         if hypervisor_info.get("ood", False):
             any_ood = True
             print("Hypervisor update needed. Updating hypervisor...")
             self.update_hypervisor(True)
-            if self.attached_server:
-                print("⚠️ Restart Moondream Station for update to take effect")
-                sys.exit(0)
             # No need to continue after hypervisor update as it will restart
             return
         else:
@@ -461,20 +418,6 @@ class AdminCommands:
             return
         else:
             print("Bootstrap is up to date")
-
-        # Update CLI if needed
-        cli_info = updates_result.get("cli", {})
-        if cli_info.get("ood", False):
-            any_ood = True
-            print("CLI update needed. Updating CLI...")
-            # For Ubuntu, this will exit the process after updating
-            self.update_cli(True)
-            # Code below only executes on macOS or if update failed
-            if self.attached_server:
-                print("⚠️ Restart Moondream Station for update to take effect")
-                sys.exit(0)
-        else:
-            print("CLI is up to date")
 
         print("All component updates have been processed")
 

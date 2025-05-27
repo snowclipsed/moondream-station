@@ -27,9 +27,7 @@ class HypervisorCLI:
 
     # Version information
 
-    def __init__(
-        self, server_url: str = "http://localhost:2020", attached_station: bool = False
-    ):
+    def __init__(self, server_url: str = "http://localhost:2020"):
         """Initialize the CLI with the server URL."""
         self.server_url = server_url
         self.headers = {"Content-Type": "application/json"}
@@ -37,13 +35,10 @@ class HypervisorCLI:
         self.vl_client = md.vl(endpoint=f"{server_url}/v1")
         self.config = Config()
         self.config.active_cli = VERSION
-        self.attached_station = attached_station
 
         # Initialize command modules
         self.inference_commands = InferenceCommands(self.vl_client)
-        self.admin_commands = AdminCommands(
-            self.server_url, self.headers, self.attached_station
-        )
+        self.admin_commands = AdminCommands(self.server_url, self.headers)
 
     # ==================== Image Commands ====================
 
