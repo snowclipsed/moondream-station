@@ -46,15 +46,18 @@ class InferenceVisor:
         """Boot the inference server subprocess, downloading if necessary."""
         self.status = "booting"
         version = self.config.active_inference_client
+        print(f"Self active inference client: {version}")
         if not version:
             # No active client, get most recent from manifest
             # version = self.manifest.latest_inference_client["version"]
             version = "v0.0.1"
             self.config.active_inference_client = version
             print(f"Set active inference client to latest: {version}")
+            print(f"Set active inference client to latest: {version}")
             logger.debug(f"Set active inference client to latest: {version}")
 
-            model = self.manifest.latest_model["revision"]
+            # model = self.manifest.latest_model["revision"] # stop pulling latest model which doesnt exist
+            model = "2025-04-14" # hardlock version to current latest
             self.config.active_model = model
             print(f"Set active model to latest: {model}")
             logger.debug(f"Set active model to latest: {model}")
@@ -103,6 +106,10 @@ class InferenceVisor:
             cmd = [bootstrap_path]
             if self.config.active_model:
                 cmd.extend(["--revision", self.config.active_model])
+                
+            print(f"DEBUG: Command being executed: {cmd}")
+            print(f"DEBUG: Working directory: {client_path}")
+            print(f"DEBUG: Active model: {self.config.active_model}")
 
             # with Spinner(f"Loading Model {self.config.active_model}..."):
             self.process = subprocess.Popen(
@@ -116,6 +123,9 @@ class InferenceVisor:
 
             # Check if process started successfully
             if self.process.poll() is not None:
+                stdout, stderr = self.process.communicate()
+                print(f"DEBUG: Process stdout: {stdout}")
+                print(f"DEBUG: Process stderr: {stderr}")
                 raise Exception(
                     f"Process exited immediately with code {self.process.returncode}"
                 )
