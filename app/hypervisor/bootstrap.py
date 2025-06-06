@@ -42,7 +42,7 @@ if PLATFORM == "macOS":
 sys.stdout.reconfigure(line_buffering=True, write_through=True)
 
 
-def configure_logging(log_dir: str, verbose: bool = False) -> logging.Logger:
+def configure_logging(log_dir: str, verbose: bool = True) -> logging.Logger:
     """Configure logging for the bootstrap process.
 
     Args:
@@ -734,7 +734,7 @@ def is_setup(app_dir: str) -> bool:
     return True
 
 
-def main(verbose: bool = False):
+def main(verbose: bool = True):
     """Entry point for Moondream Station.
 
     Handles setup of Python environment, downloads necessary components,
