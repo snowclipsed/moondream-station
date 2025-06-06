@@ -48,7 +48,8 @@ class InferenceVisor:
         version = self.config.active_inference_client
         if not version:
             # No active client, get most recent from manifest
-            version = self.manifest.latest_inference_client["version"]
+            # version = self.manifest.latest_inference_client["version"]
+            version = "v0.0.1"
             self.config.active_inference_client = version
             print(f"Set active inference client to latest: {version}")
             logger.debug(f"Set active inference client to latest: {version}")
