@@ -1,4 +1,28 @@
 #!/usr/bin/env bash
+
+# Parse args
+CLEAN=false
+ARGS=()
+for arg in "$@"; do
+    case $arg in
+        --build-clean) CLEAN=true ;;
+        *) ARGS+=("$arg") ;;
+    esac
+done
+
+TYPE=${ARGS[0]:-}
+PLATFORM=${ARGS[1]:-ubuntu}
+
+if $CLEAN; then
+    echo "Cleaning output and dev directories..."
+    rm -rf ../output
+    if [[ "$PLATFORM" = "mac" ]]; then
+        rm -rf "$HOME/Library/MoondreamStation"
+    elif [[ "$PLATFORM" = "ubuntu" ]]; then
+        rm -rf "$HOME/.local/share/MoondreamStation"
+    fi
+fi
+
 set -euo pipefail
 
 TYPE=${1:-}            # inference | hypervisor | cli | dev
