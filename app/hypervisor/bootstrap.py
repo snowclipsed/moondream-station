@@ -108,17 +108,13 @@ def setup_miniforge_installer(
     with Spinner("Installing Miniforge (this may take several minutes)..."):
         cmd = [installer_name, "-u", "-b", "-p", os.path.abspath(embed_dir)]
         res = subprocess.run(cmd, capture_output=True, text=True)
-    
     logger.info(f"Miniforge installer return code: {res.returncode}")
     if res.stdout:
         logger.debug(f"Installer stdout:\n{res.stdout}")
-        print(f"STDOUT: {res.stdout}")  # Add this
     if res.stderr:
         logger.debug(f"Installer stderr:\n{res.stderr}")
-        print(f"STDERR: {res.stderr}")  # Add this
-    
+
     if res.returncode != 0:
-        print(f"CONDA INSTALL FAILED WITH CODE: {res.returncode}")  # Add this
         raise RuntimeError("Miniforge installation failed.")
 
     os.remove(installer_name)
@@ -132,14 +128,14 @@ def setup_miniforge_installer(
     with Spinner(f"Configuring Python {python_version}..."):
         force_cmd = [conda_bin, "install", "-y", f"python={python_version}"]
         res2 = subprocess.run(force_cmd, capture_output=True, text=True)
-
     logger.info(f"conda install python={python_version} return code: {res2.returncode}")
     if res2.stdout:
         logger.debug(f"Conda python install stdout:\n{res2.stdout}")
-        print(f"CONDA STDOUT: {res2.stdout}")  # Add this
     if res2.stderr:
         logger.debug(f"Conda python install stderr:\n{res2.stderr}")
-        print(f"CONDA STDERR: {res2.stderr}")  # Add this
+
+    if res2.returncode != 0:
+        raise RuntimeError(f"Failed to install python={python_version} via conda.")
 
 
 def install_libvips_conda(embed_dir: str, logger: logging.Logger):

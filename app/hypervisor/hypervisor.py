@@ -216,9 +216,9 @@ class Hypervisor:
             return
 
         print(f"Updating bootstrap to version {update_status['version']}...")
-        # with Spinner("Shutting down inference server..."):
-        shutdown_result = self.inferencevisor.shutdown()
-        logger.debug(f"Inference server shutdown result: {shutdown_result}")
+        with Spinner("Shutting down inference server..."):
+            shutdown_result = self.inferencevisor.shutdown()
+            logger.debug(f"Inference server shutdown result: {shutdown_result}")
 
         print("Hypervisor exiting with code 99 to trigger bootstrap update")
         sys.exit(99)
@@ -283,14 +283,14 @@ class Hypervisor:
 
         Initializes the CLI, inference server, and loads configuration.
         """
-        # with Spinner("Starting Inference Server..."):
-        self.inferencevisor.boot()
+        with Spinner("Starting Inference Server..."):
+            self.inferencevisor.boot()
 
-        # with Spinner("Loading configuration..."):
-        self.config.load()
+        with Spinner("Loading configuration..."):
+            self.config.load()
 
-        # with Spinner("Starting CLI..."):
-        self.clivisor.boot()
+        with Spinner("Starting CLI..."):
+            self.clivisor.boot()
 
     def shutdown(self):
         """
@@ -301,9 +301,9 @@ class Hypervisor:
         logger.info("Shutting down hypervisor and all components")
         print("Shutting down Moondream Station...")
 
-        # with Spinner("Shutting down inference server..."):
-        shutdown_result = self.inferencevisor.shutdown()
-        logger.debug(f"Inference server shutdown result: {shutdown_result}")
+        with Spinner("Shutting down inference server..."):
+            shutdown_result = self.inferencevisor.shutdown()
+            logger.debug(f"Inference server shutdown result: {shutdown_result}")
 
         self.status = "off"
         # Don't call sys.exit() directly as it interrupts the FastAPI shutdown sequence
