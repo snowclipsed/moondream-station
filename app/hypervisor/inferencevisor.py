@@ -54,7 +54,8 @@ class InferenceVisor:
             logger.debug(f"Set active inference client to latest: {version}")
 
             # model = self.manifest.latest_model["revision"]
-            model = "2025-04-14" # Hardcoded only for build release
+            # model = "2025-04-14" # Hardcoded only for build release
+            model = "2025-05-21"
             self.config.active_model = model
             logger.debug(f"Set active model to latest: {model}")
 

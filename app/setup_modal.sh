@@ -44,14 +44,17 @@ cd /mnt/moondream-vol
 if [ ! -d moondream-station ]; then
   git clone https://github.com/snowclipsed/moondream-station/
 fi
+
 cd moondream-station/app
 bash build.sh dev ubuntu --build-clean
 cd /mnt/moondream-vol/moondream-station
 rm -rf MoondreamStation.tar
 rm -rf moondream_station_executable.tar
-cd /output/
+cd /mnt/moondream-vol/moondream-station/output
+
 tar -cvf moondream_station_executable.tar moondream_station/
 cp moondream_station_executable.tar /mnt/moondream-vol/moondream-station/
+
 cd /root/.local/share/
 tar -cvf MoondreamStation.tar MoondreamStation/
 cp MoondreamStation.tar /mnt/moondream-vol/moondream-station/
