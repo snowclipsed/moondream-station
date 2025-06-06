@@ -7,7 +7,8 @@ from typing import Dict, Any, Optional, List
 from misc import parse_version, parse_revision, download_file, check_platform
 
 PLATFORM = check_platform()
-MANIFEST_URL = "app/hypervisor/data/manifest.json"
+MANIFEST_URL = "https://depot.moondream.ai/station/md_station_manifest_ubuntu.json"
+# MANIFEST_URL = "app/hypervisor/data/manifest.json"
 MODEL_SIZE = "2b"
 
 
