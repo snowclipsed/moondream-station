@@ -49,9 +49,9 @@ bash build.sh dev ubuntu --build-clean
 cd /mnt/moondream-vol/moondream-station
 rm -rf MoondreamStation.tar
 rm -rf output.tar
-tar -czvf output.tar output/
+tar -cvf output.tar output/
 cd /root/.local/share/
-tar -czvf MoondreamStation.tar MoondreamStation/
+tar -cvf MoondreamStation.tar MoondreamStation/
 cp MoondreamStation.tar /mnt/moondream-vol/moondream-station/
 
 python --version
