@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-modal shell --image ubuntu:20.04 --gpu L4 --cpu 4 --add-python 3.9 --cmd "
+modal shell --image ubuntu:20.04 --gpu L4 --cpu 4 --add-python 3.9 --volume moondream-vol --cmd "
 apt update
 apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev git
 unset PYTHONPATH
@@ -13,7 +13,6 @@ rm -rf /usr/local/lib/python3.9*
 rm -rf /install*
 rm -rf /pkg*
 
-# Add this - remove Modal's python3 symlink
 rm -f /usr/local/bin/python3
 rm -f /usr/local/bin/python
 
@@ -29,7 +28,6 @@ ldconfig
 rm -f /usr/bin/python*
 rm -f /usr/bin/pip*
 
-# Create fresh symlinks in /usr/local/bin first
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python
 ln -sf /usr/local/bin/python3.10 /usr/bin/python3.10
@@ -41,8 +39,11 @@ echo 'export PATH=/usr/local/bin:\$PATH' >> ~/.bashrc
 ln -sf /usr/local/bin/pip3.10 /usr/bin/pip3
 ln -sf /usr/local/bin/pip3.10 /usr/bin/pip
 pip install pyinstaller distro certifi
-cd ~
-git clone https://github.com/snowclipsed/moondream-station/
+
+cd /mnt/moondream-vol
+if [ ! -d moondream-station ]; then
+  git clone https://github.com/snowclipsed/moondream-station/
+fi
 cd moondream-station/app
 bash build.sh dev ubuntu --build-clean
 python --version
