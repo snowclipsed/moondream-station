@@ -49,16 +49,16 @@ bash build.sh dev ubuntu --build-clean
 cd /mnt/moondream-vol/moondream-station
 rm -rf MoondreamStation.tar
 rm -rf output.tar
-tar -czvf output.tar.gz output/
+tar -czvf output.tar output/
 cd /root/.local/share/
-tar -czvf MoondreamStation.tar.gz MoondreamStation/
-cp MoondreamStation.tar.gz /mnt/moondream-vol/moondream-station/
+tar -czvf MoondreamStation.tar MoondreamStation/
+cp MoondreamStation.tar /mnt/moondream-vol/moondream-station/
 
 python --version
 pip --version
 exit
 exec bash
 "
-modal volume get moondream-vol /moondream-station/MoondreamStation.tar.gz
-modal volume get moondream-vol /moondream-station/output.tar.gz
+modal volume get moondream-vol /moondream-station/MoondreamStation.tar
+modal volume get moondream-vol /moondream-station/output.tar
 echo "Setup complete. Moondream Station files exported."
