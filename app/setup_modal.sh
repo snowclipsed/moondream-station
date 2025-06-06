@@ -13,7 +13,7 @@ rm -rf /usr/local/lib/python3.9*
 rm -rf /install*
 rm -rf /pkg*
 
-# Add this - remove Modal's python3 symlink
+# remove Modal's python3 symlink
 rm -f /usr/local/bin/python3
 rm -f /usr/local/bin/python
 
@@ -29,19 +29,14 @@ ldconfig
 rm -f /usr/bin/python*
 rm -f /usr/bin/pip*
 
-# Create fresh symlinks in /usr/local/bin first
+# make fresh symlinks for python3.10
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python
-
 ln -sf /usr/local/bin/python3.10 /usr/bin/python3.10
 ln -sf /usr/local/bin/python3.10 /usr/bin/python3
 ln -sf /usr/local/bin/python3.10 /usr/bin/python
 export PATH=/usr/local/bin:\$PATH
-export PYTHONPATH=
-export PYTHONHOME=/usr/local
 echo 'export PATH=/usr/local/bin:\$PATH' >> ~/.bashrc
-echo 'export PYTHONPATH=' >> ~/.bashrc
-echo 'export PYTHONHOME=/usr/local' >> ~/.bashrc
 /usr/local/bin/python3.10 -m ensurepip
 ln -sf /usr/local/bin/pip3.10 /usr/bin/pip3
 ln -sf /usr/local/bin/pip3.10 /usr/bin/pip
