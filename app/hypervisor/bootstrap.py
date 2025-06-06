@@ -108,13 +108,17 @@ def setup_miniforge_installer(
     with Spinner("Installing Miniforge (this may take several minutes)..."):
         cmd = [installer_name, "-u", "-b", "-p", os.path.abspath(embed_dir)]
         res = subprocess.run(cmd, capture_output=True, text=True)
+    
     logger.info(f"Miniforge installer return code: {res.returncode}")
     if res.stdout:
         logger.debug(f"Installer stdout:\n{res.stdout}")
+        print(f"STDOUT: {res.stdout}")  # Add this
     if res.stderr:
         logger.debug(f"Installer stderr:\n{res.stderr}")
-
+        print(f"STDERR: {res.stderr}")  # Add this
+    
     if res.returncode != 0:
+        print(f"CONDA INSTALL FAILED WITH CODE: {res.returncode}")  # Add this
         raise RuntimeError("Miniforge installation failed.")
 
     os.remove(installer_name)
