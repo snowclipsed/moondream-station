@@ -301,9 +301,9 @@ class Hypervisor:
         logger.info("Shutting down hypervisor and all components")
         print("Shutting down Moondream Station...")
 
-        with Spinner("Shutting down inference server..."):
-            shutdown_result = self.inferencevisor.shutdown()
-            logger.debug(f"Inference server shutdown result: {shutdown_result}")
+        # with Spinner("Shutting down inference server..."):
+        shutdown_result = self.inferencevisor.shutdown()
+        logger.debug(f"Inference server shutdown result: {shutdown_result}")
 
         self.status = "off"
         # Don't call sys.exit() directly as it interrupts the FastAPI shutdown sequence
