@@ -132,14 +132,14 @@ def setup_miniforge_installer(
     with Spinner(f"Configuring Python {python_version}..."):
         force_cmd = [conda_bin, "install", "-y", f"python={python_version}"]
         res2 = subprocess.run(force_cmd, capture_output=True, text=True)
+
     logger.info(f"conda install python={python_version} return code: {res2.returncode}")
     if res2.stdout:
         logger.debug(f"Conda python install stdout:\n{res2.stdout}")
+        print(f"CONDA STDOUT: {res2.stdout}")  # Add this
     if res2.stderr:
         logger.debug(f"Conda python install stderr:\n{res2.stderr}")
-
-    if res2.returncode != 0:
-        raise RuntimeError(f"Failed to install python={python_version} via conda.")
+        print(f"CONDA STDERR: {res2.stderr}")  # Add this
 
 
 def install_libvips_conda(embed_dir: str, logger: logging.Logger):
