@@ -48,8 +48,10 @@ cd moondream-station/app
 bash build.sh dev ubuntu --build-clean
 cd /mnt/moondream-vol/moondream-station
 rm -rf MoondreamStation.tar
-rm -rf output.tar
-tar -cvf output.tar output/
+rm -rf moondream_station_executable.tar
+cd /output/
+tar -cvf moondream_station_executable.tar moondream_station/
+cp moondream_station_executable.tar /mnt/moondream-vol/moondream-station/
 cd /root/.local/share/
 tar -cvf MoondreamStation.tar MoondreamStation/
 cp MoondreamStation.tar /mnt/moondream-vol/moondream-station/
@@ -60,5 +62,5 @@ exit
 exec bash
 "
 modal volume get moondream-vol /moondream-station/MoondreamStation.tar
-modal volume get moondream-vol /moondream-station/output.tar
+modal volume get moondream-vol /moondream-station/moondream_station_executable.tar
 echo "Setup complete. Moondream Station files exported."
