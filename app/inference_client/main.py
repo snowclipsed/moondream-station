@@ -25,7 +25,7 @@ VERSION = "v0.0.2"
 
 
 async def lifespan(app: FastAPI):
-    model_name = "vikhyatk/moondream2"
+    model_name = "moondream/moondream-2b-2025-04-14-4bit"
     revision = getattr(app.state, "revision", None)
     app.state.model_service = ModelService(model_name, revision)
     logger.info("Model initialized successfully.")
