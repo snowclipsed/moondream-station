@@ -1,11 +1,13 @@
 # TODO
 
 ## P1
+- remove comments/print statements
 - cross build testing
+    - build on modal run on modal
+    - build on ubuntu box, run on box
     - build on modal, tar it, run on ubuntu box
     - build on modal, tar it, run on 22.04
     - optional(?) build in ubuntu box, tar it, run on modal
-- remove comments/print statements
 - review diff
 - think of more tests for the fix
 - make test list
@@ -17,7 +19,6 @@
 
 
 ## P3
-
 - add uv/ make pip install faster?
 - package a demo image to the user.
 - Errors are not being propagated properly to the user
