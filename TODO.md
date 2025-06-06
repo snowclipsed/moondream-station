@@ -1,10 +1,20 @@
 # TODO
 
+## P1
+- cross build testing
+    - build on modal, tar it, run on ubuntu box
+    - build on modal, tar it, run on 22.04
+    - optional(?) build in ubuntu box, tar it, run on modal
+- remove comments/print statements
+- review diff
+- think of more tests for the fix
+- make test list
+
 ## P2
 - how can i make ethan's life easier with this?
 - add modal deploy script
     - add args where it automatically also runs the build.sh script with an example
-- think of tests for our fix
+
 
 ## P3
 
