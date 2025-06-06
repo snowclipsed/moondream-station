@@ -7,6 +7,7 @@
     - build on ubuntu box, run on box
     - build on modal, tar it, run on ubuntu box
     - build on modal, tar it, run on 22.04
+    - same test with int4
     - optional(?) build in ubuntu box, tar it, run on modal
 - review diff
 - think of more tests for the fix
