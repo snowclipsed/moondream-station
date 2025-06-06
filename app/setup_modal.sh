@@ -13,7 +13,7 @@ rm -rf /usr/local/lib/python3.9*
 rm -rf /install*
 rm -rf /pkg*
 
-# remove Modal's python3 symlink
+# Add this - remove Modal's python3 symlink
 rm -f /usr/local/bin/python3
 rm -f /usr/local/bin/python
 
@@ -29,7 +29,7 @@ ldconfig
 rm -f /usr/bin/python*
 rm -f /usr/bin/pip*
 
-# make fresh symlinks for python3.10
+# Create fresh symlinks in /usr/local/bin first
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3
 ln -sf /usr/local/bin/python3.10 /usr/local/bin/python
 ln -sf /usr/local/bin/python3.10 /usr/bin/python3.10
@@ -43,6 +43,8 @@ ln -sf /usr/local/bin/pip3.10 /usr/bin/pip
 pip install pyinstaller distro certifi
 cd ~
 git clone https://github.com/snowclipsed/moondream-station/
+cd moondream-station/app
+bash build.sh dev ubuntu --build-clean
 python --version
 pip --version
 exec bash

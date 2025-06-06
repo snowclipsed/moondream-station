@@ -34,6 +34,8 @@ pip install pyinstaller distro certifi
 
 cd ~
 git clone https://github.com/snowclipsed/moondream-station/
+cd moondream-station/app
+bash build.sh dev ubuntu --build-clean
 
 python --version
 pip --version
