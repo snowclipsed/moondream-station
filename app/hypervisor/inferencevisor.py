@@ -48,14 +48,11 @@ class InferenceVisor:
         version = self.config.active_inference_client
         if not version:
             # No active client, get most recent from manifest
-            # version = self.manifest.latest_inference_client["version"]
-            version = "v0.0.1" # Hardcoded only for build release
+            version = self.manifest.latest_inference_client["version"]
             self.config.active_inference_client = version
             logger.debug(f"Set active inference client to latest: {version}")
 
-            # model = self.manifest.latest_model["revision"]
-            # model = "2025-04-14" # Hardcoded only for build release
-            model = "2025-05-21"
+            model = self.manifest.latest_model["revision"]
             self.config.active_model = model
             logger.debug(f"Set active model to latest: {model}")
 
