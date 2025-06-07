@@ -250,6 +250,8 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     Raises:
         FileNotFoundError: If Python executable not found
     """
+    start_time = time.time()
+    logger.info("Installing requirements for inference client...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
     if not os.path.isfile(python_bin):
@@ -291,6 +293,9 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Packages:\n{check_packages.stdout}")
     else:
         logger.debug(f"Error listing packages:\n{check_packages.stderr}")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.info(f"Requirements for inference client installed in {elapsed_time:.2f} seconds.")
 
 
 def _shutdown_proc(signum, _frame, proc: subprocess.Popen) -> None:
