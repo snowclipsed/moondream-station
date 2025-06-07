@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-modal shell --image ubuntu:20.04 --gpu A10G --add-python 3.9 --volume moondream-vol --cmd "
+modal shell --image ubuntu:20.04 --gpu L4 --add-python 3.9 --volume moondream-vol --cmd "
 apt update
 apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev git
 unset PYTHONPATH
