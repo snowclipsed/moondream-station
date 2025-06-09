@@ -33,8 +33,9 @@ ln -sf /usr/local/bin/pip3.10 /usr/bin/pip
 pip install pyinstaller distro certifi
 
 cd ~
-git clone https://github.com/EthanReid/moondream-station
+git clone <moondream-station-repo-url>
 cd moondream-station/app
+git checkout <branch-name>
 bash build.sh dev ubuntu --build-clean
 
 python --version

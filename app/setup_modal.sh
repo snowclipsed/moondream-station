@@ -42,11 +42,12 @@ pip install pyinstaller distro certifi
 
 cd /mnt/moondream-vol
 rm -rf moondream-station
-git clone https://github.com/EthanReid/moondream-station
+git clone <moondream-station-repo-url>
 
 cd /mnt/moondream-vol/moondream-station/
 rm -rf MoondreamStation.tar
 rm -rf moondream_station_executable.tar
+git checkout <branch-name>
 git pull
 ls
 
