@@ -14,18 +14,20 @@
         "url": ""
     },
     "models": {
-        "v2025.3.27": {
-            "revision": "2025-03-27",
-            "title": "Snow Moon 2025-03-27",
-            "release_date": "2025-03-27",
-            "notes": "Notes about what changed",
-            "model size": "1.93B",
-            "dtype": "fp16",
-            "is_cpu_only": false,
-            "support_osx": true,
-            "support_ubuntu": true,
-            "support_windows": false,
-            "inference_client": "v0.0.1"
+        "2b": {
+            "2025-03-27": {
+                "revision": "2025-03-27",
+                "title": "Snow Moon 2025-03-27",
+                "release_date": "2025-03-27",
+                "notes": "Notes about what changed",
+                "model_size": "1.93B",
+                "dtype": "fp16",
+                "is_cpu_only": false,
+                "support_osx": true,
+                "support_ubuntu": true,
+                "support_windows": false,
+                "inference_client": "v0.0.1"
+            }
         }
     },
     "inference_clients": {
