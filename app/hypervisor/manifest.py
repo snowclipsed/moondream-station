@@ -30,8 +30,12 @@ class Manifest:
             self._load_local()
 
     def update(self):
-        self.logger.debug(f"Downloading manifest from {self.url} to {self.path}")
-        self._download()
+        if os.path.exists(self.url) or not (self.url.startswith('http://') or self.url.startswith('https://')):
+            self.logger.debug(f"Using local manifest from {self.url}")
+            self.path = self.url
+        else:
+            self.logger.debug(f"Downloading manifest from {self.url} to {self.path}")
+            self._download()
         self.logger.debug(f"Loading manifest from {self.path}")
         self._load_local()
 
