@@ -25,10 +25,10 @@ VERSION = "v0.0.2"
 
 
 async def lifespan(app: FastAPI):
-    model_name = "vikhyatk/moondream2"
+    model_name = getattr(app.state, "model_name", "vikhyatk/moondream2")
     revision = getattr(app.state, "revision", None)
     app.state.model_service = ModelService(model_name, revision)
-    logger.info("Model initialized successfully.")
+    logger.info(f"Model initialized successfully. Model name: {model_name}, Revision: {revision}.")
     logger.info("Moondream Server startup complete.")
     yield
 
@@ -321,7 +321,7 @@ def health(model_service: ModelService = Depends(get_model_service)):
     }
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     import uvicorn
     import argparse
 
@@ -331,6 +331,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--revision", type=str, default=None, help="Moondream revision to use"
+    )
+    parser.add_argument(
+        "--model-name", type=str, default="vikhyatk/moondream2", help="HuggingFace model name to use",
     )
     args = parser.parse_args()
 

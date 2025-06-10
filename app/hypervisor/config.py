@@ -9,6 +9,7 @@ DEFAULT_CONFIG = {
     "active_hypervisor": "",
     "active_inference_client": "",
     "active_model": "",
+    "active_model_name": "",
     "active_cli": "",
     "inference_url": "http://localhost:20200/v1",
     "ph_h": "https://us.i.posthog.com",
@@ -59,6 +60,15 @@ class Config:
         self.data["active_model"] = value
         self.save()
         self.logger.debug(f"Set active model to {value}")
+
+    @property
+    def active_model_name(self) -> Optional[str]:
+        return self.data.get("active_model_name")
+    
+    @active_model_name.setter
+    def active_model_name(self, value: Optional[str]):
+        self.data["active_model_name"] = value
+
 
     @property
     def active_cli(self) -> str:
@@ -147,6 +157,7 @@ class Config:
             "active_hypervisor": self.active_hypervisor,
             "active_inference_client": self.active_inference_client,
             "active_model": self.active_model,
+            "active_model_name": self.active_model_name,
             "active_cli": self.active_cli,
             "inference_url": self.inference_url,
             "metrics_reporting": self.metrics_reporting,

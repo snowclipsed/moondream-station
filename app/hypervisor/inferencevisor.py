@@ -52,10 +52,15 @@ class InferenceVisor:
             self.config.active_inference_client = version
             logger.debug(f"Set active inference client to latest: {version}")
 
-            model = self.manifest.latest_model["revision"]
+            latest_model = self.manifest.latest_model
+            model = latest_model["revision"]
+            model_name = latest_model["model"]["model_name"] if latest_model["model"] else None
+            
             self.config.active_model = model
+            self.config.active_model_name = model_name  # Store model_name
             logger.debug(f"Set active model to latest: {model}")
-
+            logger.debug(f"Set active model_name to: {model_name}")
+            
         client_path = os.path.join(self.inference_dir, version)
         bootstrap_path = os.path.join(
             client_path, "inference_bootstrap", "inference_bootstrap"
@@ -100,6 +105,8 @@ class InferenceVisor:
             cmd = [bootstrap_path]
             if self.config.active_model:
                 cmd.extend(["--revision", self.config.active_model])
+            if self.config.active_model_name:
+                cmd.extend(["--model-name", self.config.active_model_name])  # Add model_name arg
 
             with Spinner(f"Loading Model {self.config.active_model}..."):
                 self.process = subprocess.Popen(
@@ -354,6 +361,8 @@ class InferenceVisor:
 
         model_dict = self.manifest.get_model(model)
         self.config.active_model = model
+        self.config.active_model_name = model_dict["model"]["model_name"]  # Set model_name
+    
 
         if (
             model_dict["model"]["inference_client"]

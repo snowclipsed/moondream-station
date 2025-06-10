@@ -12,6 +12,7 @@ class ModelService:
         self.revision = revision
         self.device = self._get_best_device()
         logger.info(f"Initializing model on device: {self.device}")
+        logger.info(f"Loading model: {model_name} with revision: {revision}")
         self.tokenizer = AutoTokenizer.from_pretrained(
             model_name, revision=revision, trust_remote_code=True
         )

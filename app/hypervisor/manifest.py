@@ -4,7 +4,7 @@ import logging
 
 from typing import Dict, Any, Optional, List
 
-from misc import parse_version, parse_revision, download_file, check_platform
+from misc import parse_version, parse_revision, validate_model, download_file, check_platform
 
 PLATFORM = check_platform()
 MANIFEST_URL = "https://depot.moondream.ai/station/md_station_manifest_ubuntu.json"
@@ -86,9 +86,18 @@ class Manifest:
         return self.data.get("current_cli", {})
 
     def get_model(self, revision: str) -> Optional[Dict[str, Any]]:
+        """Get model data with HF existence check."""
+        model_data = self.models.get(revision)
+        if not model_data:
+            return None
+        
+        model_name, revision = validate_model(model_data.get("model_name"))
+        logging.debug(f"Getting model {model_name} with revision {revision}")
+        
         return {
             "revision": revision,
-            "model": self.models.get(revision, None),
+            "model": model_data,
+            "model_name": model_name
         }
 
     @property

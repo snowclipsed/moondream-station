@@ -2,6 +2,7 @@ import platform
 import urllib.request
 import os
 from pathlib import Path
+from typing import Optional
 
 
 def parse_version(version: str) -> tuple[int, ...]:
@@ -13,6 +14,50 @@ def parse_version(version: str) -> tuple[int, ...]:
         version = version[1:]
     return tuple(int(part) for part in version.split("."))
 
+
+import requests
+
+def validate_model(model_name: str, revision: str = None) -> tuple[str, str]:
+    """Validate model_name exists on HuggingFace and check revision availability.
+    
+    Args:
+        model_name: HuggingFace model name (e.g. "vikhyatk/moondream2")
+        revision: Optional HF revision/commit hash to check
+        
+    Returns:
+        tuple: (validated_model_name, actual_revision_used)
+        
+    Raises:
+        ValueError: If model_name is empty
+        FileNotFoundError: If model doesn't exist on HuggingFace
+        ConnectionError: If unable to check HuggingFace
+    """
+    if not model_name or not model_name.strip():
+        raise ValueError("Empty model name provided")
+    
+    model_name = model_name.strip()
+    
+    model_url = f"https://huggingface.co/api/models/{model_name}"
+    try:
+        response = requests.head(model_url, timeout=10)
+        if response.status_code != 200:
+            raise FileNotFoundError(f"Model '{model_name}' not found on HuggingFace")
+    except requests.RequestException as e:
+        raise ConnectionError(f"Failed to check model '{model_name}' on HuggingFace: {e}")
+    
+    if not revision:
+        return model_name, "main"
+    
+    revision_url = f"https://huggingface.co/api/models/{model_name}/revision/{revision}"
+    try:
+        response = requests.head(revision_url, timeout=10)
+        if response.status_code == 200:
+            return model_name, revision
+        else:
+            return model_name, "main"
+    except requests.RequestException:
+        return model_name, "main"
+    
 
 def parse_revision(revision: str) -> tuple[int, ...]:
     """Extract integer components from a revision string.
