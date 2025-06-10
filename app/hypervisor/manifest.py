@@ -8,7 +8,7 @@ from misc import parse_version, parse_revision, validate_model, download_file, c
 
 PLATFORM = check_platform()
 MANIFEST_URL = "https://depot.moondream.ai/station/md_station_manifest_ubuntu.json"
-MODEL_SIZE = "2b"
+MODEL_SIZE = "2B"
 
 
 class Manifest:

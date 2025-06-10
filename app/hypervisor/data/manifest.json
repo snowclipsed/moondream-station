@@ -14,35 +14,35 @@
         "url": "https://depot.moondream.ai/station/md_station_hypervisor_ubuntu.tar.gz"
     },
     "models": {
-        "2b": {
+        "2B": {
             "2025-05-21": {
-                "release_date": "2025-05-21",
-                "model_name": "moondream/moondream-2b-2025-04-14-4bit",
-                "notes": "Our latest int4 model",
+                "revision": "main",
+                "hf_id": "moondream/moondream-2b-2025-04-14-4bit",
+                "notes": "Our latest Int4 model",
                 "model_size": "1.93B",
-                "dtype": "f16",
+                "dtype": "Int4",
                 "support_osx": false,
                 "support_ubuntu": true,
                 "support_windows": false,
                 "inference_client": "v0.0.1"
             },
             "2025-04-14": {
-                "release_date": "2025-04-14",
-                "model_name": "vikhyatk/moondream2",
+                "revision": "2025-04-14",
+                "hf_id": "vikhyatk/moondream2",
                 "notes": "Our latest Float16 Moondream",
                 "model_size": "1.93B",
-                "dtype": "f16",
+                "dtype": "FP16",
                 "support_osx": true,
                 "support_ubuntu": true,
                 "support_windows": false,
                 "inference_client": "v0.0.1"
             },
             "2025-03-27": {
-                "release_date": "2025-03-27",
-                "model_name": "vikhyatk/moondream2",
+                "revision": "2025-03-27",
+                "hf_id": "vikhyatk/moondream2",
                 "notes": "Our previous model",
                 "model_size": "1.93B",
-                "dtype": "fp16",
+                "dtype": "FP16",
                 "support_osx": true,
                 "support_ubuntu": true,
                 "support_windows": false,
