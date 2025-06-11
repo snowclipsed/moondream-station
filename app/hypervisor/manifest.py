@@ -4,7 +4,7 @@ import logging
 
 from typing import Dict, Any, Optional, List
 
-from misc import parse_version, parse_revision, download_file, check_platform
+from misc import parse_version, parse_date, download_file, check_platform
 
 PLATFORM = check_platform()
 MANIFEST_URL = "https://depot.moondream.ai/station/md_station_manifest_ubuntu.json"
@@ -113,7 +113,7 @@ class Manifest:
         
         grouped = {}
         for date in release_dates:
-            numeric = parse_revision(date)
+            numeric = parse_date(date)
             grouped.setdefault(numeric, []).append(date)
         
         latest_numeric = max(grouped.keys())
