@@ -107,32 +107,39 @@ class Manifest:
         if not models_dict:
             return None
         
-        revision_ids = [model_data.get("revision_id") for model_data in models_dict.values() if model_data.get("revision_id")]
-        if not revision_ids:
+        release_dates = [model_data.get("release_date") for model_data in models_dict.values() if model_data.get("release_date")]
+        if not release_dates:
             return None
         
         grouped = {}
-        for rev in revision_ids:
-            numeric = parse_revision(rev)
-            grouped.setdefault(numeric, []).append(rev)
+        for date in release_dates:
+            numeric = parse_revision(date)
+            grouped.setdefault(numeric, []).append(date)
         
         latest_numeric = max(grouped.keys())
         candidates = grouped[latest_numeric]
         
         chosen = None
-        for rev in candidates:
-            if "4bit" in rev:
-                chosen = rev
+        for date in candidates:
+            if "4bit" in date:
+                chosen = date
                 break
         if not chosen:
-            for rev in candidates:
-                if all(c.isdigit() or c == "-" for c in rev):
-                    chosen = rev
+            for date in candidates:
+                if all(c.isdigit() or c == "-" for c in date):
+                    chosen = date
                     break
         if not chosen:
             chosen = candidates[0]
         
-        return self.get_model(chosen)
+        for model_name, model_data in models_dict.items():
+            if model_data.get("release_date") == chosen:
+                return {
+                    "revision": model_data.get("revision_id"),
+                    "model": model_data,
+                }
+        
+        return None
 
     def get_inference_client(self, version: str) -> Optional[Dict[str, str]]:
         return self.data.get("inference_clients", {}).get(version, None)
