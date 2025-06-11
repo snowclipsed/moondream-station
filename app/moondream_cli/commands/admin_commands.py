@@ -322,9 +322,8 @@ class AdminCommands:
             print("Available models:")
             for model_id, model_data in result.items():
                 print(f"\nModel: {model_id}")
-                print(f"  Revision: {model_data.get('revision', 'N/A')}")
+                print(f"  Release Date: {model_data.get('release_date', 'N/A')}")
                 print(f"  Size: {model_data.get('model_size', 'N/A')}")
-                print(f"  Data Type: {model_data.get('dtype', 'N/A')}")
                 print(f"  Notes: {model_data.get('notes', 'N/A')}")
         else:
             print("No models available.")

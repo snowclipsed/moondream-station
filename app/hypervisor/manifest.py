@@ -85,19 +85,23 @@ class Manifest:
     def current_cli(self) -> Dict[str, str]:
         return self.data.get("current_cli", {})
 
-    def get_model(self, revision: str) -> Optional[Dict[str, Any]]:
+    def get_model(self, model_name: str) -> Optional[Dict[str, Any]]:
         """Get model data with HF existence check."""
-        model_data = self.models.get(revision)
+        model_data = self.models.get(model_name)
         if not model_data:
             return None
         
-        model_name, revision = validate_model(model_data.get("model_name"))
-        logging.debug(f"Getting model {model_name} with revision {revision}")
+        hf_id, revision = validate_model(model_data.get("hf_id"), 
+                                              model_data.get("revision")
+                                              )
+        logging.debug(f"Getting model {model_name} from {hf_id} with revision {revision}")
         
         return {
+            "model_name": model_name,
+            "hf_id": hf_id,
             "revision": revision,
             "model": model_data,
-            "model_name": model_name
+            
         }
 
     @property

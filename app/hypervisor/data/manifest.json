@@ -26,30 +26,6 @@
                 "support_ubuntu": true,
                 "support_windows": false,
                 "inference_client": "v0.0.1"
-            },
-            "moondream2B-FP16-v20250414": {
-                "revision": "2025-04-14",
-                "hf_id": "vikhyatk/moondream2",
-                "release_date": "2025-04-14",
-                "notes": "Our latest Float16 Moondream",
-                "model_size": "1.93B",
-                "dtype": "FP16",
-                "support_osx": true,
-                "support_ubuntu": true,
-                "support_windows": false,
-                "inference_client": "v0.0.1"
-            },
-            "moondream2B-FP16-v20250327": {
-                "revision": "2025-03-27",
-                "hf_id": "vikhyatk/moondream2",
-                "release_date": "2025-03-27",
-                "notes": "Our previous model",
-                "model_size": "1.93B",
-                "dtype": "FP16",
-                "support_osx": true,
-                "support_ubuntu": true,
-                "support_windows": false,
-                "inference_client": "v0.0.1"
             }
         }
     },
