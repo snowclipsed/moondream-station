@@ -87,14 +87,13 @@ class Manifest:
         return self.data.get("current_cli", {})
 
     
-    def get_model(self, revision: str) -> Optional[Dict[str, Any]]:
+    def get_model(self, model_name: str) -> Optional[Dict[str, Any]]:
         models_dict = self.data.get("models", {}).get(MODEL_SIZE, {})
-        for model_name, model_data in models_dict.items():
-            if model_data.get("revision_id") == revision:
-                return {
-                    "revision": revision,
-                    "model": model_data,
-                }
+        if model_name in models_dict:
+            return {
+                "model_name": model_name,
+                "model": models_dict[model_name],
+            }
         return None
 
     @property
@@ -135,7 +134,7 @@ class Manifest:
         for model_name, model_data in models_dict.items():
             if model_data.get("release_date") == chosen:
                 return {
-                    "revision": model_data.get("revision_id"),
+                    "model_name": model_name,
                     "model": model_data,
                 }
         
