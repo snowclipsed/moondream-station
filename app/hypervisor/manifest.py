@@ -102,26 +102,37 @@ class Manifest:
 
     @property
     def models(self) -> Dict[str, Dict[str, Any]]:
-        return self.data.get("models", {}).get(MODEL_SIZE, {})
+        return self.data.get("models", {})  # Return ALL families, not just MODEL_SIZE
 
     @property
     def latest_model(self):
         models_dict = self.models
         if not models_dict:
             return None
-        # Group revisions by their numeric components
+        
+        # Iterate through ALL families (2B, 7B, etc.)
+        all_models = {}
+        for family_name, family_models in models_dict.items():
+            for outer_key, model_data in family_models.items():
+                revision = model_data.get("revision", outer_key)
+                all_models[revision] = (outer_key, model_data, family_name)
+        
+        if not all_models:
+            return None
+        
+        # Group by numeric components
         grouped = {}
-        for rev in models_dict.keys():
+        for rev in all_models.keys():
             numeric = parse_revision(rev)
             grouped.setdefault(numeric, []).append(rev)
-
-        # Determine the numerically latest revision
+        
+        if not grouped:
+            return None
+        
+        # Find latest with preferences
         latest_numeric = max(grouped.keys())
         candidates = grouped[latest_numeric]
-
-        # Prefer a revision containing "4bit" when multiple revisions share the
-        # same numeric value. Otherwise favour the revision without alphabetic
-        # characters.
+        
         chosen = None
         for rev in candidates:
             if "4bit" in rev:
@@ -134,9 +145,11 @@ class Manifest:
                     break
         if not chosen:
             chosen = candidates[0]
-
-        return self.get_model(chosen)
-
+        
+        # Now we properly unpack 3 elements including family_name
+        outer_key, model_data, family_name = all_models[chosen]
+        return model_data
+    
     def get_inference_client(self, version: str) -> Optional[Dict[str, str]]:
         return self.data.get("inference_clients", {}).get(version, None)
 

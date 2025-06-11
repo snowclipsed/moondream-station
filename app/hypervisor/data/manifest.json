@@ -15,9 +15,10 @@
     },
     "models": {
         "2B": {
-            "2025-05-21": {
-                "revision": "main",
+            "moondream2B-INT4-v20250521": {
+                "revision": "None",
                 "hf_id": "moondream/moondream-2b-2025-04-14-4bit",
+                "release_date": "2025-05-21",
                 "notes": "Our latest Int4 model",
                 "model_size": "1.93B",
                 "dtype": "Int4",
@@ -26,9 +27,10 @@
                 "support_windows": false,
                 "inference_client": "v0.0.1"
             },
-            "2025-04-14": {
+            "moondream2B-FP16-v20250414": {
                 "revision": "2025-04-14",
                 "hf_id": "vikhyatk/moondream2",
+                "release_date": "2025-04-14",
                 "notes": "Our latest Float16 Moondream",
                 "model_size": "1.93B",
                 "dtype": "FP16",
@@ -37,9 +39,10 @@
                 "support_windows": false,
                 "inference_client": "v0.0.1"
             },
-            "2025-03-27": {
+            "moondream2B-FP16-v20250327": {
                 "revision": "2025-03-27",
                 "hf_id": "vikhyatk/moondream2",
+                "release_date": "2025-03-27",
                 "notes": "Our previous model",
                 "model_size": "1.93B",
                 "dtype": "FP16",
@@ -53,7 +56,7 @@
     "inference_clients": {
         "v0.0.1": {
             "date": "2025-05-",
-            "url": "https://depot.moondream.ai/station/md_station_inference_bootstrap_ubuntu_int4.tar.gz"
+            "url": ""
         }
     },
     "notes": [

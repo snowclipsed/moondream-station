@@ -51,13 +51,13 @@ class InferenceVisor:
             version = self.manifest.latest_inference_client["version"]
             self.config.active_inference_client = version
             logger.debug(f"Set active inference client to latest: {version}")
-
             latest_model = self.manifest.latest_model
+            
             model = latest_model["revision"]
-            model_name = latest_model["model"]["model_name"] if latest_model["model"] else None
+            model_name = latest_model["hf_id"]
             
             self.config.active_model = model
-            self.config.active_model_name = model_name  # Store model_name
+            self.config.active_model_name = model_name
             logger.debug(f"Set active model to latest: {model}")
             logger.debug(f"Set active model_name to: {model_name}")
             
