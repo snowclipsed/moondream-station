@@ -50,7 +50,6 @@ class Manifest:
     def _download(self):
         try:
             os.makedirs(os.path.dirname(self.path), exist_ok=True)
-
             download_file(self.url, self.path, self.logger)
         except Exception as e:
             self.logger.error(f"Error downloading manifest: {e}")
