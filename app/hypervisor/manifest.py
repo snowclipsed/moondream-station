@@ -30,10 +30,15 @@ class Manifest:
             self._load_local()
 
     def update(self):
-        self.logger.debug(f"Downloading manifest from {self.url} to {self.path}")
-        self._download()
-        self.logger.debug(f"Loading manifest from {self.path}")
-        self._load_local()
+        if self.url.startswith(('http://', 'https://')):
+            self.logger.debug(f"Downloading manifest from {self.url} to {self.path}")
+            self._download()
+            self.logger.debug(f"Loading manifest from {self.path}")
+            self._load_local()
+        else:
+            self.logger.debug(f"Loading manifest directly from local path {self.url}")
+            self.path = self.url
+            self._load_local()
 
     def _load_local(self) -> Dict[str, Any]:
         try:
@@ -45,7 +50,6 @@ class Manifest:
     def _download(self):
         try:
             os.makedirs(os.path.dirname(self.path), exist_ok=True)
-
             download_file(self.url, self.path, self.logger)
         except Exception as e:
             self.logger.error(f"Error downloading manifest: {e}")
