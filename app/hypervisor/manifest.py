@@ -86,11 +86,16 @@ class Manifest:
     def current_cli(self) -> Dict[str, str]:
         return self.data.get("current_cli", {})
 
+    
     def get_model(self, revision: str) -> Optional[Dict[str, Any]]:
-        return {
-            "revision": revision,
-            "model": self.models.get(revision, None),
-        }
+        models_dict = self.data.get("models", {}).get(MODEL_SIZE, {})
+        for model_name, model_data in models_dict.items():
+            if model_data.get("revision_id") == revision:
+                return {
+                    "revision": revision,
+                    "model": model_data,
+                }
+        return None
 
     @property
     def models(self) -> Dict[str, Dict[str, Any]]:
@@ -101,19 +106,19 @@ class Manifest:
         models_dict = self.models
         if not models_dict:
             return None
-        # Group revisions by their numeric components
+        
+        revision_ids = [model_data.get("revision_id") for model_data in models_dict.values() if model_data.get("revision_id")]
+        if not revision_ids:
+            return None
+        
         grouped = {}
-        for rev in models_dict.keys():
+        for rev in revision_ids:
             numeric = parse_revision(rev)
             grouped.setdefault(numeric, []).append(rev)
-
-        # Determine the numerically latest revision
+        
         latest_numeric = max(grouped.keys())
         candidates = grouped[latest_numeric]
-
-        # Prefer a revision containing "4bit" when multiple revisions share the
-        # same numeric value. Otherwise favour the revision without alphabetic
-        # characters.
+        
         chosen = None
         for rev in candidates:
             if "4bit" in rev:
@@ -126,7 +131,7 @@ class Manifest:
                     break
         if not chosen:
             chosen = candidates[0]
-
+        
         return self.get_model(chosen)
 
     def get_inference_client(self, version: str) -> Optional[Dict[str, str]]:
