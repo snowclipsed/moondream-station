@@ -18,7 +18,7 @@
             "moondream2-int4": {
                 "release_date": "2025-05-21",
                 "model_id": "moondream/moondream-2b-2025-04-14-4bit",
-                "revision": "None",
+                "revision": null,
                 "notes": "Our latest int4 model",
                 "model_size": "1.93B",
                 "dtype": "f16",
