@@ -3,15 +3,15 @@
     "manifest_date": "04/20/25",
     "current_bootstrap": {
         "version": "v0.0.1",
-        "url": "https://depot.moondream.ai/station/md_station_ubuntu.tar.gz"
+        "url": ""
     },
     "current_cli": {
         "version": "v0.0.1",
-        "url": "https://depot.moondream.ai/station/md_station_cli_ubuntu.tar.gz "
+        "url": ""
     },
     "current_hypervisor": {
         "version": "v0.0.1",
-        "url": "https://depot.moondream.ai/station/md_station_hypervisor_ubuntu.tar.gz"
+        "url": ""
     },
     "models": {
         "2b": {
@@ -56,7 +56,7 @@
     "inference_clients": {
         "v0.0.1": {
             "date": "2025-05-",
-            "url": "https://depot.moondream.ai/station/md_station_inference_bootstrap_ubuntu_int4.tar.gz"
+            "url": ""
         }
     },
     "notes": [
