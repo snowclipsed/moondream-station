@@ -95,12 +95,12 @@ class InferenceVisor:
                 if model_data and model_data["model"]:
                     model_info = model_data["model"]
                     model_id = model_info.get("model_id")
-                    revision_id = model_info.get("revision_id")
+                    revision = model_info.get("revision")
                     
                     if model_id:
                         cmd.extend(["--model-id", model_id])
-                    if revision_id and revision_id != "None":
-                        cmd.extend(["--revision", revision_id])
+                    if revision and revision != "None":
+                        cmd.extend(["--revision", revision])
                         
             with Spinner(f"Loading Model {self.config.active_model}..."):
                 self.process = subprocess.Popen(
@@ -414,9 +414,9 @@ class InferenceVisor:
 
         ret_value = {
             "ood": False,
-            "revision": self.manifest.latest_model["revision"],
+            "revision": self.manifest.latest_model["model"]["revision"],
         }
-        if self.config.active_model != self.manifest.latest_model["revision"]:
+        if self.config.active_model != self.manifest.latest_model["model_name"]:
             ret_value["ood"] = True
         return ret_value
 
