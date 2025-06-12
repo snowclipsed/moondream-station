@@ -336,7 +336,7 @@ if __name__ == "__main__":
         "--model-id", type=str, default=None, help="Moondream model ID to use"
     )
     args = parser.parse_args()
-    
+
     app.state.revision = args.revision
 
     if args.model_id:
