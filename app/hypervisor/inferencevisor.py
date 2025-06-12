@@ -108,7 +108,7 @@ class InferenceVisor:
                     
                     if model_id:
                         cmd.extend(["--model-id", model_id])
-                    if revision and revision != "None":
+                    if revision:
                         cmd.extend(["--revision", revision])
                         
             with Spinner(f"Loading Model {self.config.active_model}..."):
