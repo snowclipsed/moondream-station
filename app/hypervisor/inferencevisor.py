@@ -63,7 +63,7 @@ class InferenceVisor:
         )
 
         logger.debug(f"Looking for inference bootstrap at: {bootstrap_path}")
-        
+
         if not os.path.exists(bootstrap_path):
             with Spinner("Downloading Inference Client..."):
                 if not self._download_inference_client(version):
@@ -72,7 +72,7 @@ class InferenceVisor:
                         "status": "error",
                         "message": f"Failed to download inference client {version}",
                     }
-                
+
         try:
             logger.debug(f"Setting executable permissions on {bootstrap_path}")
 
@@ -92,9 +92,9 @@ class InferenceVisor:
                 "status": "error",
                 "message": f"Failed to set permissions: {str(e)}",
             }
-        
+
         self._kill_process()
-        
+
         logger.debug(f"Booting inference server {version}")
         try:
             # Revision refers to the Huggingface Moondream revision
@@ -126,7 +126,7 @@ class InferenceVisor:
                     raise Exception(
                         f"Process exited immediately with code {self.process.returncode}"
                     )
-                
+
             # Wait for the inference server to be healthy with a timeout
             with Spinner("Waiting for inference server to be ready..."):
                 start_time = time.time()
@@ -137,7 +137,7 @@ class InferenceVisor:
                     health_status = self.check_health()
                     if health_status.get("inference_server") == "healthy":
                         break
-                
+
                     # Check if we've timed out
                     if time.time() - start_time > timeout_seconds:
                         self.status = "boot timed out"
@@ -149,7 +149,9 @@ class InferenceVisor:
                             "status": "error",
                             "message": f"Inference server startup timed out after {timeout_minutes} minutes",
                         }
+
                     # Wait before checking again
+
                     time.sleep(3)
             self.status = "ok"
             return {
@@ -159,7 +161,7 @@ class InferenceVisor:
         except Exception as e:
             logger.error(f"Failed to start inference server: {str(e)}")
             logger.error(f"Try running: chmod +x {bootstrap_path} manually")
-            
+
             self.status = "boot failed"
             return {
                 "status": "error",
