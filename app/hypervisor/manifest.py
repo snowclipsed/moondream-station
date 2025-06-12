@@ -88,11 +88,10 @@ class Manifest:
 
     
     def get_model(self, model_name: str) -> Optional[Dict[str, Any]]:
-        models_dict = self.data.get("models", {}).get(MODEL_SIZE, {})
-        if model_name in models_dict:
+        if model_name in self.models:
             return {
                 "model_name": model_name,
-                "model": models_dict[model_name],
+                "model": self.models[model_name],
             }
         return None
 
