@@ -50,6 +50,7 @@ class Manifest:
     def _download(self):
         try:
             os.makedirs(os.path.dirname(self.path), exist_ok=True)
+
             download_file(self.url, self.path, self.logger)
         except Exception as e:
             self.logger.error(f"Error downloading manifest: {e}")
@@ -109,6 +110,8 @@ class Manifest:
         if not release_dates:
             return None
         
+        # Group revisions by their numeric components
+
         grouped = {}
         for date in release_dates:
             numeric = parse_date(date)
@@ -118,10 +121,16 @@ class Manifest:
         candidates = grouped[latest_numeric]
         
         chosen = None
+
+        # Determine the numerically latest revision
         for date in candidates:
             if "4bit" in date:
                 chosen = date
                 break
+        
+        # Prefer a revision containing "4bit" when multiple revisions share the
+        # same numeric value. Otherwise favour the revision without alphabetic
+        # characters.
         if not chosen:
             for date in candidates:
                 if all(c.isdigit() or c == "-" for c in date):
