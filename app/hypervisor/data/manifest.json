@@ -18,7 +18,7 @@
             "moondream-int4": {
                 "release_date": "2025-05-21",
                 "model_id": "moondream/moondream-2b-2025-04-14-4bit",
-                "revision_id": "None",
+                "revision": "None",
                 "notes": "Our latest int4 model",
                 "model_size": "1.93B",
                 "dtype": "f16",
@@ -30,7 +30,7 @@
             "moondream-fp16": {
                 "release_date": "2025-04-14",
                 "model_id":"vikhyatk/moondream2",
-                "revision_id": "2025-04-14",
+                "revision": "2025-04-14",
                 "notes": "Our latest Float16 Moondream",
                 "model_size": "1.93B",
                 "dtype": "f16",
@@ -42,7 +42,7 @@
             "moondream-fp16-old": {
                 "release_date": "2025-03-27",
                 "model_id":"vikhyatk/moondream2",
-                "revision_id": "2025-03-27",
+                "revision": "2025-03-27",
                 "notes": "Our previous model",
                 "model_size": "1.93B",
                 "dtype": "fp16",
