@@ -241,6 +241,13 @@ def setup_env_if_needed(
 
 
 def install_requirements(venv_dir: str, logger: logging.Logger):
+    """Install Python requirements from requirements.txt.
+    Args:
+        venv_dir: Virtual environment directory
+        logger: Logger instance for output
+    Raises:
+        FileNotFoundError: If Python executable not found
+    """
     logger.info("Installing requirements for inference client...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
