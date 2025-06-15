@@ -250,7 +250,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     Raises:
         FileNotFoundError: If Python executable not found
     """
-    logger.info("Installing requirements for inference client...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
     if not os.path.isfile(python_bin):
