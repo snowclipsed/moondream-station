@@ -242,9 +242,11 @@ def setup_env_if_needed(
 
 def install_requirements(venv_dir: str, logger: logging.Logger):
     """Install Python requirements from requirements.txt.
+
     Args:
         venv_dir: Virtual environment directory
         logger: Logger instance for output
+
     Raises:
         FileNotFoundError: If Python executable not found
     """
@@ -253,7 +255,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     python_bin = os.path.join(venv_dir, "bin", "python")
     if not os.path.isfile(python_bin):
         raise FileNotFoundError(f"Cannot find {python_bin}")
-    
+
     logger.info("Upgrading pip...")
     res = subprocess.run(
         [python_bin, "-m", "pip", "install", "--upgrade", "pip"],
@@ -264,11 +266,11 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Pip upgrade stdout:\n{res.stdout}")
     if res.stderr:
         logger.debug(f"Pip upgrade stderr:\n{res.stderr}")
-    
+
     if not os.path.isfile(requirements_file):
         logger.info(f"'{requirements_file}' not found, skipping requirements install.")
         return
-    
+
     logger.info("Installing 'uv' into venv...")
     res = subprocess.run(
         [python_bin, "-m", "pip", "install", "--upgrade", "uv"],
@@ -281,7 +283,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"'uv' install stderr:\n{res.stderr}")
     if res.returncode != 0:
         raise RuntimeError("Failed to install 'uv' via pip.")
-    
+
     logger.info(f"Installing requirements from {requirements_file}")
     res = subprocess.run(
         [python_bin, "-m", "uv", "pip", "install", "-r", requirements_file],
@@ -292,7 +294,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Requirements install stdout:\n{res.stdout}")
     if res.stderr:
         logger.debug(f"Requirements install stderr:\n{res.stderr}")
-    
+
     logger.info("Checking installed packages in venv")
     check_packages = subprocess.run(
         [python_bin, "-m", "pip", "list"], capture_output=True, text=True
