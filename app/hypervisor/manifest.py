@@ -118,7 +118,7 @@ class Manifest:
         candidate_models = [(name, data) for name, data in models_dict.items() 
                         if data.get("release_date") == latest_date]
         
-        # Apply preferences based on dtype only
+        # Apply preferences based on dtype, INT4 > FP16 in preference.
         chosen = None
         
         for name, data in candidate_models:
