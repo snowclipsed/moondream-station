@@ -215,7 +215,7 @@ case "$TYPE" in
     dev)         prepare_dev       ;;
     run)         run_station       ;;
     *)
-        echo "Usage: $0 <inference|hypervisor|cli|dev|run> [platform]" >&2
+        echo "Usage: $0 {inference|hypervisor|cli|dev} [platform] | $0 run" >&2
         exit 1
         ;;
 esac
