@@ -1,0 +1,20 @@
+{
+  "files": {
+    "clivisor.py": "873117ec131bffeb55aa4eafb68f8188", 
+    "config.py": "e356d38b11fbfb3f14a65cbf5b4aed57",
+    "display_utils.py": "0ab381175635b5da9cbd96928f8e3c27",
+    "hypervisor.py": "e4da5d9b5421e3e9e1f7c1da94d73b3f",
+    "hypervisor_server.py": "248f7058d76e061701a38307141a8ab5",
+    "inferencevisor.py": "45fabdb064a373558ebf0abf7dcb59b7",
+    "manifest.py": "86a2af8b2cddaabed1c241cea11a4884",
+    "misc.py": "3d8f730a45b51c3eb37349c85c79b5e1",
+    "requirements.txt": "a8bf33e4a130c631f2bc4f03229d5521",
+    "update_bootstrap.sh": "04bc8b0deeb405e202aa320982f63465"
+  },
+  "required_directories": [
+    "inference/v0.0.3/inference_bootstrap",
+    "moondream_cli",
+    "moondream_cli/commands",
+    "moondream_cli/utils"
+  ]
+}
