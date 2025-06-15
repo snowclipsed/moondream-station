@@ -259,7 +259,8 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     logger.info("Upgrading pip...")
     res = subprocess.run(
         [python_bin, "-m", "pip", "install", "--upgrade", "pip"],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
     )
     logger.info(f"Pip upgrade return code: {res.returncode}")
     if res.stdout:
@@ -287,7 +288,8 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     logger.info(f"Installing requirements from {requirements_file}")
     res = subprocess.run(
         [python_bin, "-m", "uv", "pip", "install", "-r", requirements_file],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
     )
     logger.info(f"Requirements install return code: {res.returncode}")
     if res.stdout:
