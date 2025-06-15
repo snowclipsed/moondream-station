@@ -291,7 +291,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     Raises:
         FileNotFoundError: If Python executable not found
     """
-    start_time = time.time()
     logger.info("Installing Python requirements for hypervisor bootstrap...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
@@ -313,7 +312,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     if res.stderr:
         logger.debug(f"Pip upgrade stderr:\n{res.stderr}")
 
-    logger.info("Installing uv package for fast Python package management...")
+    logger.info("Installing uv package manager...")
     with Spinner("Installing uv..."):
         res_uv = subprocess.run(
             [python_bin, "-m", "pip", "install", "--upgrade", "uv"],
@@ -351,12 +350,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Packages:\n{check_packages.stdout}")
     else:
         logger.debug(f"Error listing packages:\n{check_packages.stderr}")
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    logger.info(
-        f"Python requirements for hypervisor bootstrap installed in {elapsed_time:.2f} seconds"
-    )
-
 
 def _unset_sll_cert(signum: int, frame, logger: logging.Logger) -> None:
     """

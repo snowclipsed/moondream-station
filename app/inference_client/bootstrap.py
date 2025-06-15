@@ -241,7 +241,6 @@ def setup_env_if_needed(
 
 
 def install_requirements(venv_dir: str, logger: logging.Logger):
-    start_time = time.time()
     logger.info("Installing requirements for inference client...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
@@ -262,20 +261,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     if not os.path.isfile(requirements_file):
         logger.info(f"'{requirements_file}' not found, skipping requirements install.")
         return
-    
-    # Install cffi and pyvips FIRST with pip for compatibility
-    logger.info("Installing cffi and pyvips with pip...")
-    res = subprocess.run(
-        [python_bin, "-m", "pip", "install", "cffi==1.16.0", "pyvips==2.2.3"],
-        capture_output=True, text=True,
-    )
-    logger.info(f"cffi/pyvips install return code: {res.returncode}")
-    if res.stdout:
-        logger.debug(f"cffi/pyvips install stdout:\n{res.stdout}")
-    if res.stderr:
-        logger.debug(f"cffi/pyvips install stderr:\n{res.stderr}")
-    if res.returncode != 0:
-        raise RuntimeError("Failed to install cffi/pyvips via pip.")
     
     logger.info("Installing 'uv' into venv...")
     res = subprocess.run(
@@ -309,10 +294,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Packages:\n{check_packages.stdout}")
     else:
         logger.debug(f"Error listing packages:\n{check_packages.stderr}")
-    
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    logger.info(f"Requirements installed in {elapsed_time:.2f} seconds.")
 
 
 def _shutdown_proc(signum, _frame, proc: subprocess.Popen) -> None:
