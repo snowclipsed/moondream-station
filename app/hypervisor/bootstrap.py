@@ -350,6 +350,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     else:
         logger.debug(f"Error listing packages:\n{check_packages.stderr}")
 
+
 def _unset_sll_cert(signum: int, frame, logger: logging.Logger) -> None:
     """
     Signal handler that unsets $SSL_CERT_FILE and terminates the process.
