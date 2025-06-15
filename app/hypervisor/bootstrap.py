@@ -312,12 +312,13 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     if res.stderr:
         logger.debug(f"Pip upgrade stderr:\n{res.stderr}")
 
-    logger.info("Installing uv package manager...")
-    res_uv = subprocess.run(
-        [python_bin, "-m", "pip", "install", "--upgrade", "uv"],
-        capture_output=True,
-        text=True,
-    )
+    logger.info("Installing uv...")
+    with Spinner("Upgrading pip..."):
+        res_uv = subprocess.run(
+            [python_bin, "-m", "pip", "install", "--upgrade", "uv"],
+            capture_output=True,
+            text=True,
+        )
     logger.info(f"uv install return code: {res_uv.returncode}")
     if res_uv.stdout:
         logger.debug(f"uv install stdout:\n{res_uv.stdout}")
