@@ -100,47 +100,41 @@ class Manifest:
         if not models_dict:
             return None
         
+        # Find models with latest release date
         release_dates = [model_data.get("release_date") for model_data in models_dict.values() if model_data.get("release_date")]
         if not release_dates:
             return None
         
-        # Group revisions by their numeric components
-
+        # Group by date
         grouped = {}
         for date in release_dates:
             numeric = parse_date(date)
             grouped.setdefault(numeric, []).append(date)
         
         latest_numeric = max(grouped.keys())
-        candidates = grouped[latest_numeric]
+        latest_date = grouped[latest_numeric][0]  # All same date anyway
         
+        # Get all models with the latest date
+        candidate_models = [(name, data) for name, data in models_dict.items() 
+                        if data.get("release_date") == latest_date]
+        
+        # Apply preferences based on dtype only
         chosen = None
-
-        # Determine the numerically latest revision
-        for date in candidates:
-            if "4bit" in date:
-                chosen = date
+        
+        for name, data in candidate_models:
+            dtype = data.get("dtype", "").lower()
+            if "int4" in dtype or "4bit" in dtype:
+                chosen = (name, data)
                 break
         
-        # Prefer a revision containing "4bit" when multiple revisions share the
-        # same numeric value. Otherwise favour the revision without alphabetic
-        # characters.
+        # Fallback to first candidate
         if not chosen:
-            for date in candidates:
-                if all(c.isdigit() or c == "-" for c in date):
-                    chosen = date
-                    break
-        if not chosen:
-            chosen = candidates[0]
+            chosen = candidate_models[0]
         
-        for model_name, model_data in models_dict.items():
-            if model_data.get("release_date") == chosen:
-                return {
-                    "model_name": model_name,
-                    "model": model_data,
-                }
-        
-        return None
+        return {
+            "model_name": chosen[0],
+            "model": chosen[1],
+        }
 
     def get_inference_client(self, version: str) -> Optional[Dict[str, str]]:
         return self.data.get("inference_clients", {}).get(version, None)
