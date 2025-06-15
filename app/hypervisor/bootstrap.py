@@ -291,7 +291,6 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
     Raises:
         FileNotFoundError: If Python executable not found
     """
-    logger.info("Installing Python requirements for hypervisor bootstrap...")
     requirements_file = "requirements.txt"
     python_bin = os.path.join(venv_dir, "bin", "python")
     logger.info(f"Using {python_bin} to install packages")
@@ -313,7 +312,7 @@ def install_requirements(venv_dir: str, logger: logging.Logger):
         logger.debug(f"Pip upgrade stderr:\n{res.stderr}")
 
     logger.info("Installing uv...")
-    with Spinner("Upgrading pip..."):
+    with Spinner("Installing uv..."):
         res_uv = subprocess.run(
             [python_bin, "-m", "pip", "install", "--upgrade", "uv"],
             capture_output=True,
