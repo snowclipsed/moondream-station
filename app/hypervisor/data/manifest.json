@@ -15,7 +15,7 @@
     },
     "models": {
         "2b": {
-            "Moondream 2 INT4 (rev)": {
+            "Moondream 2 INT4": {
                 "release_date": "2025-05-21",
                 "model_id": "moondream/moondream-2b-2025-04-14-4bit",
                 "revision": null,
@@ -54,9 +54,13 @@
         }
     },
     "inference_clients": {
-        "v0.0.1": {
+        "v0.0.3": {
             "date": "2025-05-",
-            "url": ""
+            "url": "https://depot.moondream.ai/station/md_station_inference_bootstrap_ubuntu_int4.tar.gz"
+        },
+        "v0.0.1": {
+            "date": "2025-03-27",
+            "url": "https://depot.moondream.ai/station/md_station_inference_bootstrap_ubuntu.tar.gz"
         }
     },
     "notes": [
