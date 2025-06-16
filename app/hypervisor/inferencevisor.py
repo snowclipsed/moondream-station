@@ -424,14 +424,14 @@ class InferenceVisor:
             update_manifest: If True, refresh manifest data before checking
 
         Returns:
-            dict: Status containing "ood" (out of date) flag and current version
+            dict: Status containing "ood" (out of date) flag and latest model name
         """
         if update_manifest:
             self.manifest.update()
 
         ret_value = {
             "ood": False,
-            "revision": self.manifest.latest_model["model"]["revision"],
+            "model_name": self.manifest.latest_model["model_name"],
         }
         if self.config.active_model != self.manifest.latest_model["model_name"]:
             ret_value["ood"] = True
