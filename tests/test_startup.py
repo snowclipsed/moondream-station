@@ -64,14 +64,17 @@ def validate_files(dir_path, expected_json):
     
     return result
 
-def test_server_startup(cleanup=True, executable_path='./moondream_station', server_args=None):
+def test_startup(child, backend_path="~/.local/share/MoondreamStation", checksum_path="expected_checksum.json"):
+    validate_files(os.path.expanduser(backend_path), checksum_path)
+    return child
+
+def test_server(cleanup=True, executable_path='./moondream_station', server_args=None):
     if cleanup:
         clean_files()
 
     child = start_server(executable_path, server_args)
     child = check_health(child)
-    
-    validate_files(os.path.expanduser("~/.local/share/MoondreamStation"), "expected_checksum.json")
+    child = test_startup(child)
     
     end_server(child)
 
@@ -82,7 +85,7 @@ def main():
     
     args, server_args = parser.parse_known_args()
     
-    test_server_startup(cleanup=not args.no_cleanup, executable_path=args.executable, server_args=server_args)
+    test_server(cleanup=not args.no_cleanup, executable_path=args.executable, server_args=server_args)
 
 if __name__ == "__main__":
     main()
