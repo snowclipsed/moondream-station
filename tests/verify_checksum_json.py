@@ -1,7 +1,6 @@
 import os
 import json
 import hashlib
-import sys
 
 def get_md5(filepath):
     try:
@@ -23,6 +22,12 @@ def scan_directory(root_path):
     return result
 
 def validate_directory(dir_path, expected_json_path):
+    if not os.path.exists(expected_json_path):
+        return {'error': f'Expected JSON not found: {expected_json_path}', 'valid': False}
+    
+    if not os.path.exists(dir_path):
+        return {'error': f'Directory not found: {dir_path}', 'valid': False}
+    
     with open(expected_json_path, 'r') as f:
         expected = json.load(f)
     
@@ -36,19 +41,10 @@ def validate_directory(dir_path, expected_json_path):
         elif get_md5(full_path) != expected_hash:
             mismatched.append(rel_path)
     
-    return {'missing': missing, 'mismatched': mismatched, 'valid': not (missing or mismatched)}
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: python validator.py <directory_path> <expected_json_path>")
-        sys.exit(1)
-    
-    result = validate_directory(sys.argv[1], sys.argv[2])
-    
-    if result['valid']:
-        print("All expected files present with correct checksums")
-    else:
-        if result['missing']:
-            print(f"Missing files: {result['missing']}")
-        if result['mismatched']:
-            print(f"Checksum mismatch: {result['mismatched']}")
+    return {
+        'missing': missing, 
+        'mismatched': mismatched, 
+        'valid': len(missing) == 0 and len(mismatched) == 0,
+        'total_expected': len(expected),
+        'found': len(expected) - len(missing)
+    }
