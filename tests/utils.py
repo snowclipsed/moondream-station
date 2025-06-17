@@ -28,37 +28,33 @@ def load_expected_responses(json_path="expected_responses.json"):
         return {}
 
 def clean_response_output(output, command_type):
+    lines = [line.strip() for line in output.split('\n') if line.strip()]
+    
     if command_type == 'caption':
-        lines = output.split('\n')
-        caption_started = False
         caption_lines = []
-        
         for line in lines:
-            line = line.strip()
-            if 'Generating streaming caption...' in line:
-                caption_started = True
-                continue
-            elif caption_started and line and not line.startswith('caption '):
+            if (not line.startswith('caption ') and 
+                'Generating' not in line and
+                'moondream>' not in line):
                 caption_lines.append(line)
         
-        if caption_lines:
-            return ' '.join(caption_lines)
-        
-        return output.strip()
+        return max(caption_lines, key=len) if caption_lines else output.strip()
     
     elif command_type == 'detect':
-        if 'No' in output and 'detected' in output:
+        if any('No' in line and 'detected' in line for line in lines):
             return "No face objects detected"
-        else:
-            match = re.search(r"Position: (\{[^}]+\})", output)
+        
+        for line in lines:
+            match = re.search(r"Position: (\{[^}]+\})", line)
             if match:
                 return match.group(1)
-            return output.strip()
+        return output.strip()
     
     elif command_type == 'point':
-        match = re.search(r"(\{'x': [^}]+\})", output)
-        if match:
-            return match.group(1)
+        for line in lines:
+            match = re.search(r"(\{'x': [^}]+\})", line)
+            if match:
+                return match.group(1)
         return output.strip()
     
     else:

@@ -80,7 +80,6 @@ def test_capability(child, command, expected_response, timeout=60):
     child.sendline(command)
     
     if 'caption' in command:
-        # Handle streaming caption - wait for completion
         try:
             child.expect('Generating streaming caption...', timeout=10)
             child.expect('moondream>', timeout=timeout)
@@ -216,5 +215,6 @@ def main():
     setup_logging(verbose=args.verbose)
     
     test_server(cleanup=not args.no_cleanup, executable_path=args.executable, server_args=server_args)
+
 if __name__ == "__main__":
     main()
