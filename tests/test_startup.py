@@ -40,7 +40,8 @@ def end_server(child):
     child.sendline('exit')
     child.expect(r'Exiting Moondream CLI', timeout=10)
     
-    # force close for now
+    # force close for now?
+    # TODO: see if we can refactor this
     if child.isalive():
         child.close(force=True)
     
@@ -63,7 +64,8 @@ def test_startup(child, hypervisor_occupied, inference_occupied, backend_path="~
     
     logging.debug(f"Hypervisor Port is currently {'occupied' if hypervisor_occupied else 'not occupied'}")
     logging.debug(f"Inference Server Port is currently {'occupied' if inference_occupied else 'not occupied'}")
-    
+    # TODO: Add more reliable hypervisor checking.
+
     return child
 
 def test_server(cleanup=True, executable_path='./moondream_station', server_args=None):
@@ -80,6 +82,7 @@ def test_server(cleanup=True, executable_path='./moondream_station', server_args
     end_server(child)
 
 def main():
+    #TODO: Put in all the hardcoded variables in a test config that can be easily changed
     parser = argparse.ArgumentParser(description='Test Moondream Station startup')
     parser.add_argument('--no-cleanup', action='store_true', help='Skip cleanup before test')
     parser.add_argument('--executable', default='./moondream_station', help='Path to moondream_station executable')
