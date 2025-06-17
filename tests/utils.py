@@ -1,6 +1,7 @@
+import os
+import json
 import socket
 import logging
-import os
 import shutil
 import psutil
 from verify_checksum_json import validate_directory
@@ -15,6 +16,36 @@ def clean_files(folder = "$HOME/.local/share/MoondreamStation"):
         return
     else:
         logging.debug(f"Folder was not cleaned.")
+
+def load_expected_responses(json_path="expected_responses.json"):
+    """Load expected responses from JSON file"""
+    try:
+        with open(json_path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        logging.error(f"Failed to load expected responses: {e}")
+        return {}
+
+def clean_response_output(output, command_type):
+    """Extract just the AI response content"""
+    if command_type in ['caption', 'query']:
+        # Find the line that starts with a space (the actual AI response)
+        for line in output.split('\n'):
+            if line.startswith(' ') and len(line.strip()) > 10:
+                return line.strip()
+    else:
+        # For detect/point, skip command echo and clean whitespace
+        lines = output.split('\n')
+        result_lines = []
+        for line in lines:
+            # Skip the command line itself
+            if any(cmd in line for cmd in ['detect face', 'point face', 'moondream>']):
+                continue
+            if line.strip():  # Only non-empty lines
+                result_lines.append(line.rstrip())  # Remove trailing whitespace
+        return '\n'.join(result_lines)
+    
+    return output.strip()
 
 def validate_files(dir_path, expected_json):
     result = validate_directory(dir_path, expected_json)

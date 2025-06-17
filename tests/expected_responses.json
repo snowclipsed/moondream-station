@@ -1,0 +1,10 @@
+{
+  "Moondream2 INT4": {
+    "caption": "The image shows a white circle with a simple, cartoon-like face. The face is composed of two black circles for eyes and a curved line for a mouth, giving it a smiling expression. The circle is set against a stark black background, which highlights its white color and cheerful expression.",
+    "query": {
+      "keywords": ["face", "smiling", "white", "circle", "black", "background", "eyes"]
+    },
+    "detect": "Detecting object: face\nDetected 1 face(s):\n  Position: {'x_min': 0.08724340796470642, 'y_min': 0.09001743793487549, 'x_max': 0.9088503420352936, 'y_max': 0.9060763120651245}",
+    "point": "Finding points for: face\nFound 1 point(s) for face:\n  {'x': 0.49609375, 'y': 0.35546875}"
+  }
+}
