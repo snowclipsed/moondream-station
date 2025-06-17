@@ -7,7 +7,24 @@ from verify_checksum_json import validate_directory
 
 GLOBAL_TIMEOUT = 300
 
-logging.basicConfig(filename='test_startup.log', filemode='w', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+def setup_logging(verbose=False):
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    
+    # File handler
+    file_handler = logging.FileHandler('test_startup.log', mode='w')
+    file_handler.setLevel(logging.DEBUG)
+    file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(file_formatter)
+    logger.addHandler(file_handler)
+    
+    # Console handler (only if verbose)
+    if verbose:
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        console_formatter = logging.Formatter('%(levelname)s: %(message)s')
+        console_handler.setFormatter(console_formatter)
+        logger.addHandler(console_handler)
 
 def clean_files(folder = "$HOME/.local/share/MoondreamStation"):
     folder = os.path.expanduser(folder)
@@ -91,8 +108,11 @@ def main():
     parser = argparse.ArgumentParser(description='Test Moondream Station startup')
     parser.add_argument('--no-cleanup', action='store_true', help='Skip cleanup before test')
     parser.add_argument('--executable', default='./moondream_station', help='Path to moondream_station executable')
+    parser.add_argument('--verbose', action='store_true', help='Print log messages to console')
     
     args, server_args = parser.parse_known_args()
+    
+    setup_logging(verbose=args.verbose)
     
     test_server(cleanup=not args.no_cleanup, executable_path=args.executable, server_args=server_args)
 
