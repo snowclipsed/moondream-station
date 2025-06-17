@@ -15,7 +15,7 @@
     },
     "models": {
         "2b": {
-            "Moondream 2 INT4": {
+            "Moondream2-INT4": {
                 "release_date": "2025-05-21",
                 "model_id": "moondream/moondream-2b-2025-04-14-4bit",
                 "revision": null,
@@ -27,7 +27,7 @@
                 "support_windows": false,
                 "inference_client": "v0.0.3"
             },
-            "Moondream2 (2025.04.14)": {
+            "Moondream2-2025-04-14": {
                 "release_date": "2025-04-14",
                 "model_id":"vikhyatk/moondream2",
                 "revision": "2025-04-14",
@@ -39,7 +39,7 @@
                 "support_windows": false,
                 "inference_client": "v0.0.1"
             },
-            "Moondream2 (2025.3.27)": {
+            "Moondream2-2025-3-27": {
                 "release_date": "2025-03-27",
                 "model_id":"vikhyatk/moondream2",
                 "revision": "2025-03-27",
