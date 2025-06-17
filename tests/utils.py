@@ -35,10 +35,22 @@ def clean_response_output(output, command_type):
         for line in lines:
             if (not line.startswith('caption ') and 
                 'Generating' not in line and
+                '------ Completed ------' not in line and
                 'moondream>' not in line):
                 caption_lines.append(line)
         
         return max(caption_lines, key=len) if caption_lines else output.strip()
+    
+    elif command_type == 'query':
+        query_lines = []
+        for line in lines:
+            if (not line.startswith('query ') and
+                'Answering streaming query' not in line and
+                '------ Completed ------' not in line and
+                'moondream>' not in line):
+                query_lines.append(line)
+        
+        return max(query_lines, key=len) if query_lines else output.strip()
     
     elif command_type == 'detect':
         if any('No' in line and 'detected' in line for line in lines):

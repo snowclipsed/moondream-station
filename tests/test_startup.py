@@ -129,9 +129,19 @@ def test_model_capabilities(child, model_name):
     
     capabilities = [
         {
-            'command': f'caption {image_url}',
-            'expected': model_expected['caption'],
-            'name': 'Caption'
+            'command': f'caption {image_url} --length short',
+            'expected': model_expected['caption_short'],
+            'name': 'Caption Short'
+        },
+        {
+            'command': f'caption {image_url} --length normal',
+            'expected': model_expected['caption_normal'],
+            'name': 'Caption Normal'
+        },
+        {
+            'command': f'caption {image_url} --length long',
+            'expected': model_expected['caption_long'],
+            'name': 'Caption Long'
         },
         {
             'command': f'query "What is in this image?" {image_url}',
@@ -151,12 +161,15 @@ def test_model_capabilities(child, model_name):
     ]
     
     results = {}
-    for cap in capabilities:
+    for i, cap in enumerate(capabilities):
+        logging.debug("")
+        logging.debug(f"--- {cap['name']} Test ---")
         try:
             success, output = test_capability(child, cap['command'], cap['expected'])
             results[cap['name']] = {'success': success, 'output': output}
         except Exception as e:
             logging.error(f"{cap['name']} test failed: {e}")
+            logging.debug(f"")
             results[cap['name']] = {'success': False, 'output': str(e)}
     
     passed = sum(1 for r in results.values() if r['success'])
@@ -174,10 +187,10 @@ def test_all_models(child):
     
     models = parse_model_list_output(model_list_output)
     logging.debug(f"Found {len(models)} models: {models}")
-    logging.debug("")
     
     for model_name in models:
-        logging.debug(f"Testing model: {model_name}")
+        logging.debug("")
+        logging.debug(f"--- Testing model: {model_name} ---")
         
         child.sendline(f'admin model-use "{model_name}" --confirm')
         try:

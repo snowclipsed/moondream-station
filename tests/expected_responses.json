@@ -1,7 +1,13 @@
 {
   "Moondream2-INT4": {
-    "caption": {
+    "caption_short": {
+      "keywords": ["white", "circle", "black", "smiley", "face", "eyes", "mouth", "background"]
+    },
+    "caption_normal": {
       "keywords": ["white", "circle", "cartoon-like", "face", "black", "eyes", "mouth", "smiling", "background"]
+    },
+    "caption_long": {
+      "keywords": ["simple", "stylized", "face", "white", "circular", "background", "minimalistic", "cartoonish", "eyes", "mouth", "cheerful", "modern"]
     },
     "query": {
       "keywords": ["smiling", "face", "white", "circle", "black", "eyes", "background", "contrast"]
@@ -10,8 +16,14 @@
     "point": "{'x': 0.49609375, 'y': 0.35546875}"
   },
   "Moondream2-2025-04-14": {
-    "caption": {
-      "keywords": ["simple", "cartoon-like", "face", "white", "circle", "black", "eyes", "smile", "cheerful", "background"]
+    "caption_short": {
+      "keywords": ["white", "circle", "simple", "friendly", "face", "black", "circles", "eyes", "curved", "mouth", "happiness"]
+    },
+    "caption_normal": {
+      "keywords": ["simple", "cartoon-like", "face", "white", "circle", "curved", "mouth", "friendly", "eyes", "smile", "background"]
+    },
+    "caption_long": {
+      "keywords": ["simple", "round", "white", "circle", "gradient", "soft", "dimensional", "eyes", "smile", "minimalistic", "childlike", "happiness", "friendliness"]
     },
     "query": {
       "keywords": ["simple", "cute", "face", "smiling", "white", "round", "friendly", "approachable"]
@@ -20,8 +32,14 @@
     "point": "{'x': 0.5029296875, 'y': 0.3798828125}"
   },
   "Moondream2-2025-3-27": {
-    "caption": {
-      "keywords": ["simple", "round", "white", "emoticon", "blue", "outline", "cheerful", "smiling", "face", "eyes", "mouth", "friendly", "black", "background"]
+    "caption_short": {
+      "keywords": ["white", "circle", "simple", "friendly", "face", "black", "eyes", "curved", "mouth", "happiness"]
+    },
+    "caption_normal": {
+      "keywords": ["simple", "round", "white", "emoticon", "blue", "outline", "cheerful", "smiling", "face", "eyes", "mouth", "friendly", "background"]
+    },
+    "caption_long": {
+      "keywords": ["simple", "round", "white", "circle", "gradient", "shading", "soft", "smiley", "face", "eyes", "smile", "minimalistic", "cute", "cheerful"]
     },
     "query": {
       "keywords": ["simple", "cartoon-like", "face", "smiling", "white", "round", "cheerful"]
