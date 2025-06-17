@@ -56,7 +56,16 @@ def validate_files(dir_path, expected_json):
     if result['valid']:
         logging.debug(f"File validation PASSED: {result['found']}/{result['total_expected']} files valid")
     else:
-        logging.debug(f"File validation ISSUES: {result['found']}/{result['total_expected']} files found")
+        missing_count = len(result.get('missing', []))
+        mismatched_count = len(result.get('mismatched', []))
+        
+        if missing_count > 0 and mismatched_count > 0:
+            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {missing_count} missing, {mismatched_count} mismatched")
+        elif missing_count > 0:
+            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {missing_count} missing")
+        elif mismatched_count > 0:
+            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {mismatched_count} hash mismatched")
+        
         if result.get('missing'):
             logging.debug(f"Missing files: {result['missing']}")
         if result.get('mismatched'):
