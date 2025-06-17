@@ -7,7 +7,7 @@
       "keywords": ["white", "circle", "cartoon-like", "face", "black", "eyes", "mouth", "smiling", "background"]
     },
     "caption_long": {
-      "keywords": ["simple", "stylized", "face", "white", "circular", "background", "minimalistic", "cartoonish", "eyes", "mouth", "cheerful", "modern"]
+      "keywords": ["simple", "stylized", "face", "round", "white", "glossy", "appearance", "circle", "minimalist", "small", "closed", "eyes", "black", "ovals", "curved", "line", "smiling", "mouth", "contentment", "happiness", "cheerful", "friendly", "expression", "gentle"]
     },
     "query": {
       "keywords": ["smiling", "face", "white", "circle", "black", "eyes", "background", "contrast"]
@@ -17,7 +17,7 @@
   },
   "Moondream2-2025-04-14": {
     "caption_short": {
-      "keywords": ["white", "circle", "simple", "friendly", "face", "black", "circles", "eyes", "curved", "mouth", "happiness"]
+      "keywords": ["white", "circle", "smiley", "centered", "face", "black", "eyes", "mouth"]
     },
     "caption_normal": {
       "keywords": ["simple", "cartoon-like", "face", "white", "circle", "curved", "mouth", "friendly", "eyes", "smile", "background"]
