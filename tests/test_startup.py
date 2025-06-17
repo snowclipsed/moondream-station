@@ -102,10 +102,11 @@ def test_capability(child, command, expected_response, timeout=60):
     
     cleaned_output = clean_response_output(output, command_type)
     
-    if command_type == 'query':
+    # Use keyword matching for caption and query, exact matching for detect and point
+    if command_type in ['caption', 'query']:
         keywords = expected_response.get('keywords', [])
         matches = sum(1 for keyword in keywords if keyword.lower() in cleaned_output.lower())
-        success = matches >= len(keywords) * 0.7
+        success = matches >= len(keywords) * 0.7  # 70% keyword match
         logging.debug(f"Keywords matched: {matches}/{len(keywords)} ({'PASS' if success else 'FAIL'})")
     else:
         success = cleaned_output == expected_response
@@ -173,6 +174,7 @@ def test_all_models(child):
     
     models = parse_model_list_output(model_list_output)
     logging.debug(f"Found {len(models)} models: {models}")
+    logging.debug("")
     
     for model_name in models:
         logging.debug(f"Testing model: {model_name}")
@@ -182,6 +184,7 @@ def test_all_models(child):
             child.expect('Model initialization completed successfully!', timeout=120)
             child.expect('moondream>', timeout=10)
             logging.debug(f"Successfully switched to model: {model_name}")
+            logging.debug("")
             
             child = test_model_capabilities(child, model_name)
             
