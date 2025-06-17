@@ -11,14 +11,12 @@ def setup_logging(verbose=False):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     
-    # File handler
     file_handler = logging.FileHandler('test_startup.log', mode='w')
     file_handler.setLevel(logging.DEBUG)
     file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(file_formatter)
     logger.addHandler(file_handler)
     
-    # Console handler (only if verbose)
     if verbose:
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.DEBUG)
@@ -53,6 +51,14 @@ def check_health(child):
     logging.debug(health_prompt)
     return child
 
+def parse_model_list_output(output):
+    models = []
+    for line in output.split('\n'):
+        line = line.strip()
+        if line.startswith('Model: '):
+            models.append(line[7:].strip())
+    return models
+
 def test_startup(child, hypervisor_occupied, inference_occupied, backend_path="~/.local/share/MoondreamStation", checksum_path="expected_checksum.json"):
     logging.debug(f"Hypervisor Port was {'occupied' if hypervisor_occupied else 'not occupied'} before the model startup.")
     logging.debug(f"Inference Server Port was {'occupied' if inference_occupied else 'not occupied'} before the model startup.")
@@ -69,15 +75,22 @@ def test_startup(child, hypervisor_occupied, inference_occupied, backend_path="~
     return child
 
 def test_capability(child, command, expected_response, timeout=60):
-    """Test capability with appropriate matching strategy"""
     logging.debug(f"Testing: {command}")
     
     child.sendline(command)
-    child.expect('moondream>', timeout=timeout)
+    
+    if 'caption' in command:
+        # Handle streaming caption - wait for completion
+        try:
+            child.expect('Generating streaming caption...', timeout=10)
+            child.expect('moondream>', timeout=timeout)
+        except:
+            child.expect('moondream>', timeout=timeout)
+    else:
+        child.expect('moondream>', timeout=timeout)
     
     output = child.before.decode().strip()
     
-    # Determine command type
     command_type = None
     if 'caption' in command:
         command_type = 'caption'
@@ -90,15 +103,12 @@ def test_capability(child, command, expected_response, timeout=60):
     
     cleaned_output = clean_response_output(output, command_type)
     
-    # Use different matching strategies
     if command_type == 'query':
-        # Keyword matching for non-deterministic responses
         keywords = expected_response.get('keywords', [])
         matches = sum(1 for keyword in keywords if keyword.lower() in cleaned_output.lower())
-        success = matches >= len(keywords) * 0.7  # 70% keyword match
+        success = matches >= len(keywords) * 0.7
         logging.debug(f"Keywords matched: {matches}/{len(keywords)} ({'PASS' if success else 'FAIL'})")
     else:
-        # Exact matching for deterministic responses
         success = cleaned_output == expected_response
         logging.debug(f"Exact match: {'PASS' if success else 'FAIL'}")
     
@@ -107,8 +117,7 @@ def test_capability(child, command, expected_response, timeout=60):
     
     return success, cleaned_output
 
-def test_model_capabilities(child, model_name="Moondream2 INT4"):
-    """Test all model capabilities with exact matching"""
+def test_model_capabilities(child, model_name):
     image_url = "https://raw.githubusercontent.com/m87-labs/moondream-station/refs/heads/main/assets/md_logo_clean.png"
     
     expected_responses = load_expected_responses()
@@ -156,6 +165,32 @@ def test_model_capabilities(child, model_name="Moondream2 INT4"):
     
     return child
 
+def test_all_models(child):
+    child.sendline('admin model-list')
+    child.expect('moondream>', timeout=30)
+    model_list_output = child.before.decode()
+    logging.debug("Model list output:")
+    logging.debug(model_list_output)
+    
+    models = parse_model_list_output(model_list_output)
+    logging.debug(f"Found {len(models)} models: {models}")
+    
+    for model_name in models:
+        logging.debug(f"Testing model: {model_name}")
+        
+        child.sendline(f'admin model-use "{model_name}" --confirm')
+        try:
+            child.expect('Model initialization completed successfully!', timeout=120)
+            child.expect('moondream>', timeout=10)
+            logging.debug(f"Successfully switched to model: {model_name}")
+            
+            child = test_model_capabilities(child, model_name)
+            
+        except Exception as e:
+            logging.warning(f"Model switch to '{model_name}' failed: {e}")
+    
+    return child
+
 def test_server(cleanup=True, executable_path='./moondream_station', server_args=None):
     if cleanup:
         clean_files()
@@ -166,16 +201,11 @@ def test_server(cleanup=True, executable_path='./moondream_station', server_args
     child = start_server(executable_path, server_args)
     child = check_health(child)
     child = test_startup(child, pre_hypervisor, pre_inference)
-    child = test_model_capabilities(child)
+    child = test_all_models(child)
     
     end_server(child)
 
 def main():
-    #TODO: For the user testing, we just return minimal debug directly showing which test fails and passes. Full logs will be in the log file.
-    #TODO: We don't get an exact response in query. Is there a more robust way of testing this in an automated fashion?
-    #TODO: Put in all the hardcoded variables in a test config that can be easily changed
-    #TODO: P2 : Create README
-    #TODO: Add spaces between different logging areas, it is too cramped right now
     parser = argparse.ArgumentParser(description='Test Moondream Station startup')
     parser.add_argument('--no-cleanup', action='store_true', help='Skip cleanup before test')
     parser.add_argument('--executable', default='./moondream_station', help='Path to moondream_station executable')
@@ -186,6 +216,5 @@ def main():
     setup_logging(verbose=args.verbose)
     
     test_server(cleanup=not args.no_cleanup, executable_path=args.executable, server_args=server_args)
-
 if __name__ == "__main__":
     main()

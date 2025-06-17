@@ -1,10 +1,26 @@
 {
-  "Moondream2 INT4": {
+  "Moondream2-INT4": {
     "caption": "The image shows a white circle with a simple, cartoon-like face. The face is composed of two black circles for eyes and a curved line for a mouth, giving it a smiling expression. The circle is set against a stark black background, which highlights its white color and cheerful expression.",
     "query": {
       "keywords": ["face", "smiling", "white", "circle", "black", "background", "eyes"]
     },
-    "detect": "Detecting object: face\nDetected 1 face(s):\n  Position: {'x_min': 0.08724340796470642, 'y_min': 0.09001743793487549, 'x_max': 0.9088503420352936, 'y_max': 0.9060763120651245}",
-    "point": "Finding points for: face\nFound 1 point(s) for face:\n  {'x': 0.49609375, 'y': 0.35546875}"
+    "detect": "{'x_min': 0.08724340796470642, 'y_min': 0.09001743793487549, 'x_max': 0.9088503420352936, 'y_max': 0.9060763120651245}",
+    "point": "{'x': 0.49609375, 'y': 0.35546875}"
+  },
+  "Moondream2-2025-04-14": {
+    "caption": "The image presents a simple, cartoon-like face composed of a large, white circle. The circle features two small, black, closed eyes positioned on the left side and a curved, black line forming a smile on the right side, creating a cheerful expression. The face is set against a stark black background, which accentuates the white circle and black features.",
+    "query": {
+      "keywords": ["simple", "cute", "face", "smiling", "white", "round", "friendly", "approachable"]
+    },
+    "detect": "{'x_min': 0.0, 'y_min': 0.0, 'x_max': 1.0, 'y_max': 1.0}",
+    "point": "{'x': 0.5029296875, 'y': 0.3798828125}"
+  },
+  "Moondream2-2025-3-27": {
+    "caption": "The image presents a simple, round, white emoticon with a light blue outline. The emoticon has a cheerful, smiling face with two small, black, oval-shaped eyes and a curved, upturned line for a mouth, giving it a friendly and approachable appearance. The emoticon is set against a stark black background, which accentuates its white color and blue outline.",
+    "query": {
+      "keywords": ["simple", "cartoon-like", "face", "smiling", "white", "round", "cheerful"]
+    },
+    "detect": "No face objects detected",
+    "point": "{'x': 0.509765625, 'y': 0.365234375}"
   }
 }

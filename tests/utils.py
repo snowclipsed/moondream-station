@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import socket
 import logging
@@ -27,25 +28,41 @@ def load_expected_responses(json_path="expected_responses.json"):
         return {}
 
 def clean_response_output(output, command_type):
-    """Extract just the AI response content"""
-    if command_type in ['caption', 'query']:
-        # Find the line that starts with a space (the actual AI response)
-        for line in output.split('\n'):
-            if line.startswith(' ') and len(line.strip()) > 10:
-                return line.strip()
-    else:
-        # For detect/point, skip command echo and clean whitespace
+    if command_type == 'caption':
         lines = output.split('\n')
-        result_lines = []
+        caption_started = False
+        caption_lines = []
+        
         for line in lines:
-            # Skip the command line itself
-            if any(cmd in line for cmd in ['detect face', 'point face', 'moondream>']):
+            line = line.strip()
+            if 'Generating streaming caption...' in line:
+                caption_started = True
                 continue
-            if line.strip():  # Only non-empty lines
-                result_lines.append(line.rstrip())  # Remove trailing whitespace
-        return '\n'.join(result_lines)
+            elif caption_started and line and not line.startswith('caption '):
+                caption_lines.append(line)
+        
+        if caption_lines:
+            return ' '.join(caption_lines)
+        
+        return output.strip()
     
-    return output.strip()
+    elif command_type == 'detect':
+        if 'No' in output and 'detected' in output:
+            return "No face objects detected"
+        else:
+            match = re.search(r"Position: (\{[^}]+\})", output)
+            if match:
+                return match.group(1)
+            return output.strip()
+    
+    elif command_type == 'point':
+        match = re.search(r"(\{'x': [^}]+\})", output)
+        if match:
+            return match.group(1)
+        return output.strip()
+    
+    else:
+        return output.strip()
 
 def validate_files(dir_path, expected_json):
     result = validate_directory(dir_path, expected_json)
