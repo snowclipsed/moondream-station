@@ -3,7 +3,7 @@ import logging
 import shutil
 import os
 import argparse
-from verify_checksum_json import validate_directory
+from utils import is_port_occupied, validate_files, clean_files
 
 GLOBAL_TIMEOUT = 300
 
@@ -25,17 +25,6 @@ def setup_logging(verbose=False):
         console_formatter = logging.Formatter('%(levelname)s: %(message)s')
         console_handler.setFormatter(console_formatter)
         logger.addHandler(console_handler)
-
-def clean_files(folder = "$HOME/.local/share/MoondreamStation"):
-    folder = os.path.expanduser(folder)
-    if os.path.exists(folder):
-        logging.debug(f"Attempting to clean folder...{folder}")
-        shutil.rmtree(folder)
-    if not os.path.exists(folder):
-        logging.debug(f"Successfully cleaned {folder}")
-        return
-    else:
-        logging.debug(f"Folder was not cleaned.")
 
 def start_server(executable_path='./moondream_station', args=None):
     cmd = [executable_path]
@@ -63,44 +52,30 @@ def check_health(child):
     logging.debug(health_prompt)
     return child
 
-def validate_files(dir_path, expected_json):
-    result = validate_directory(dir_path, expected_json)
-    
-    if result.get('error'):
-        logging.debug(f"Validation error: {result['error']}")
-        return result
-    
-    if result['valid']:
-        logging.debug(f"File validation PASSED: {result['found']}/{result['total_expected']} files valid")
-    else:
-        missing_count = len(result.get('missing', []))
-        mismatched_count = len(result.get('mismatched', []))
-        
-        if missing_count > 0 and mismatched_count > 0:
-            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {missing_count} missing, {mismatched_count} mismatched")
-        elif missing_count > 0:
-            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {missing_count} missing")
-        elif mismatched_count > 0:
-            logging.debug(f"File validation FAILED: {result['found']}/{result['total_expected']} files found, {mismatched_count} hash mismatched")
-        
-        if result.get('missing'):
-            logging.debug(f"Missing files: {result['missing']}")
-        if result.get('mismatched'):
-            logging.debug(f"Mismatched files: {result['mismatched']}")
-    
-    return result
+def test_startup(child, hypervisor_occupied, inference_occupied, backend_path="~/.local/share/MoondreamStation", checksum_path="expected_checksum.json"):
+    logging.debug(f"Hypervisor Port was {'occupied' if hypervisor_occupied else 'not occupied'} before the model startup.")
+    logging.debug(f"Inference Server Port was {'occupied' if inference_occupied else 'not occupied'} before the model startup.")
 
-def test_startup(child, backend_path="~/.local/share/MoondreamStation", checksum_path="expected_checksum.json"):
     validate_files(os.path.expanduser(backend_path), checksum_path)
+    
+    hypervisor_occupied = is_port_occupied(2020)
+    inference_occupied = is_port_occupied(20200)
+    
+    logging.debug(f"Hypervisor Port is currently {'occupied' if hypervisor_occupied else 'not occupied'}")
+    logging.debug(f"Inference Server Port is currently {'occupied' if inference_occupied else 'not occupied'}")
+    
     return child
 
 def test_server(cleanup=True, executable_path='./moondream_station', server_args=None):
     if cleanup:
         clean_files()
 
+    hypervisor_occupied = is_port_occupied(2020)
+    inference_occupied = is_port_occupied(20200)
+
     child = start_server(executable_path, server_args)
     child = check_health(child)
-    child = test_startup(child)
+    child = test_startup(child, hypervisor_occupied, inference_occupied)
     
     end_server(child)
 
